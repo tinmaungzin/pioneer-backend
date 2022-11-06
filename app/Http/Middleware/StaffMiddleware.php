@@ -5,15 +5,13 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class AllUserMiddleware
+class StaffMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
         if (
             auth()->user()->tokenCan('role:admin') ||
-            auth()->user()->tokenCan('role:receptionist') ||
-            auth()->user()->tokenCan('role:salesperson') ||
-            auth()->user()->tokenCan('role:user')
+            auth()->user()->tokenCan('role:receptionist')
         ) {
             return $next($request);
         }

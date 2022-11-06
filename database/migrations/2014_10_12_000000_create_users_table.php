@@ -19,7 +19,7 @@ return new class extends Migration
             $table->char('phone_number',50)->unique();
             $table->string('password');
             $table->unsignedBigInteger('allowed_people')->default(0);
-            $table->foreignId('user_type_id')->nullable()->constrained();
+            $table->foreignId('user_type_id')->constrained();
             $table->boolean('is_archived')->default(true);
             $table->unsignedBigInteger('point')->default(0);
             $table->unsignedBigInteger('balance')->default(0);

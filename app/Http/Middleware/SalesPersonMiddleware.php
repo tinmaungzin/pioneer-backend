@@ -5,13 +5,13 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class SalePersonMiddleware
+class SalesPersonMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->tokenCan('role:saleperson')) {
+        if (auth()->user()->tokenCan('role:salesperson')) {
             return $next($request);
         }
-        responseData('message','Sale person token is needed',401);
+        responseData('message','Sales person token is needed',401);
     }
 }

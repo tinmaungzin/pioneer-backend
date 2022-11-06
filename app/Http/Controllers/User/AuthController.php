@@ -29,8 +29,6 @@ class AuthController extends Controller
     public function registerWithPhoneNumber(UserRegisterRequest $request){
         $this->phone_auth->sendCodeAndReturnUser($request->all());
     }
-
-
     public function confirmCode(CheckingUserRequest $request){
         $auth_user =  $this->phone_auth->confirmCode($request->user_id, $request->code);
         if ($auth_user)
