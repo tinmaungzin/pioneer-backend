@@ -22,7 +22,8 @@ class AuthRepository implements  AuthInterface
     }
 
     protected function checkCredentials($data,$role){
-        $auth_user = $this->findAuthUser($data,$role);
+        $type = $this->setType($role);
+        $auth_user = $this->findAuthUser($data,$type,$role);
         if ($auth_user) {
             if (Hash::check($data->password, $auth_user->password)) {
                 return $auth_user;
@@ -33,10 +34,21 @@ class AuthRepository implements  AuthInterface
         responseStatus('The given data is not exists',422);
     }
 
-    public function findAuthUser($data,$role){
+    public function findAuthUser($data,$type,$role){
         $credentials = $this->getModelData($data);
-        $auth_user = Model($role)::where([$credentials[$role]])->first();
+        $auth_user = Model($type)::where($credentials[$role])->first();
         return ($auth_user) ?: null;
+    }
+
+    protected function setType($role){
+        $type = null ;
+        if(in_array($role,['admin','receptionist'])){
+            $type = 'staff';
+        }
+        if(in_array($role,['user','salesperson'])){
+            $type = 'user';
+        }
+        return $type;
     }
 
     public function createToken($auth_user,$role){
@@ -45,9 +57,10 @@ class AuthRepository implements  AuthInterface
 
     public function getModelData($data){
        return array(
-            "admin" => ['email', $data->email],
-            "singer" => ['email', $data->email],
-            "user" => ['phone_number',$data->phone_number]
+            "admin" => [['email', $data->email],['staff_type_id',1]],
+            "receptionist" => [['email', $data->email],['staff_type_id',2]],
+            "user" => [['phone_number',$data->phone_number],['user_type_id',1]],
+            "salesperson" => [['phone_number',$data->phone_number],['user_type_id',2]],
         );
     }
 }

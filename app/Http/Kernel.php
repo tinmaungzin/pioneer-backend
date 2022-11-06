@@ -3,9 +3,14 @@
 namespace App\Http;
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\AllUserMiddleware;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\CheckHeaderMiddleware;
+use App\Http\Middleware\ReceptionistMiddleware;
+use App\Http\Middleware\SalesPersonMiddleware;
+use App\Http\Middleware\SalesUserMiddleware;
 use App\Http\Middleware\SingerMiddleware;
+use App\Http\Middleware\StaffMiddleware;
 use App\Http\Middleware\UserMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -71,6 +76,11 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'type.admin' => AdminMiddleware::class,
         'type.user'=> UserMiddleware::class,
+        'type.receptionist' => ReceptionistMiddleware::class,
+        'type.salesperson' => SalesPersonMiddleware::class,
+        'type.all' => AllUserMiddleware::class,
+        'type.staff' => StaffMiddleware::class,
+        'type.sales_user' => SalesUserMiddleware::class,
         'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
     ];

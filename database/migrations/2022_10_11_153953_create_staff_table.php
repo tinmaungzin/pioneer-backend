@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->char('email',50)->unique();
             $table->char('name',50);
-            $table->string('password',50);
+            $table->char('password',200);
             $table->foreignId('staff_type_id')->nullable()->constrained();
             $table->timestamps();
         });
