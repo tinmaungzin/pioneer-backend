@@ -4,13 +4,16 @@ namespace App\Http\Requests\Admin;
 
 use App\Http\Requests\APIRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rule;
 
-class AdminPasswordUpdateRequest extends APIRequest
+class StaffUpdateRequest extends APIRequest
 {
     public function rules()
     {
         return [
-          'password'=>'required|confirmed|min:6',
+            'name'=>'required',
+            'email'=>['required','email','regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
+                Rule::unique('staffs','email')->ignore($this->staff->id)]
         ];
     }
 

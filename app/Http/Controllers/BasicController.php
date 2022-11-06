@@ -17,6 +17,12 @@ class BasicController extends Controller
         responseData('data',$data,200);
     }
 
+    public function indexDataByType($type = null, $var=null)
+    {
+        $data = $this->model::where($var, $type)->orderBy('id', 'desc')->paginate(20)->withQueryString();
+        responseData('data',$data,200);
+    }
+
     public function storeData($request){
         $data = $request->all();
         if($request->has('photo')){

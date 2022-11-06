@@ -2,84 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\StaffPasswordUpdateRequest;
+use App\Http\Requests\Admin\StaffStoreRequest;
+use App\Http\Requests\Admin\StaffUpdateRequest;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 
-class StaffController extends Controller
+class StaffController extends BasicController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+
+    public function __construct(){
+        $staff = Staff::class;
+        parent::__construct($staff);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+
+    public function index(){
+        $type = request()->staff_type_id;
+        parent::indexDataByType($type, 'staff_type_id');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(StaffStoreRequest $request){
+        parent::storeData($request);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Staff  $staff
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Staff $staff)
-    {
-        //
+    public function update(StaffUpdateRequest $request, Staff $staff){
+         parent::updateData($request,$staff);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Staff  $staff
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Staff $staff)
-    {
-        //
+    public function destroy(Staff $staff){
+         parent::destroyData($staff);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Staff  $staff
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Staff $staff)
-    {
-        //
+    public function search(Request $request){
+         parent::searchData($request);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Staff  $staff
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Staff $staff)
-    {
-        //
+    public function changePassword(StaffPasswordUpdateRequest $request,Staff $staff){
+         parent::updateData($request,$staff);
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\CheckHeaderMiddleware;
 use App\Http\Middleware\SingerMiddleware;
 use App\Http\Middleware\UserMiddleware;
+use App\Http\Middleware\OriginMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -20,8 +21,9 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
+        OriginMiddleware::class,
         \App\Http\Middleware\TrustProxies::class,
-        \Illuminate\Http\Middleware\HandleCors::class,
+        // \Illuminate\Http\Middleware\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
@@ -73,5 +75,6 @@ class Kernel extends HttpKernel
         'type.user'=> UserMiddleware::class,
         'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
+        'cors' => OriginMiddleware::class
     ];
 }

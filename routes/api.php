@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\UserAuthController;
@@ -19,4 +20,9 @@ Route::group(['prefix'=>'user'], function () {
 Route::group(['middleware' =>['auth:sanctum','type.user'],'prefix'=>'user'], function () {
     Route::get('users',[UserController::class,'index']);
 });
+Route::group(['prefix'=>'admin'], function () {
+    Route::resource('staffs',StaffController::class);
+});
+
+
 
