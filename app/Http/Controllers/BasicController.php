@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\Space\ImageFacade;
+use App\Models\SetType;
 
 class BasicController extends Controller
 {
@@ -60,4 +61,6 @@ class BasicController extends Controller
         $data = $this->model::where('name', 'LIKE', "%{$query}%")->paginate(20)->withQueryString();
         responseData('data',$data,200);
     }
+
+    
 }

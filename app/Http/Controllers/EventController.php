@@ -2,84 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\EventStoreRequest;
+use App\Http\Requests\Admin\EventUpdateRequest;
 use App\Models\Event;
+use App\Models\SetType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
-class EventController extends Controller
+class EventController extends BasicController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function __construct(){
+        $event = Event::class;
+        parent::__construct($event);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function getTablesBySetId(Request $request)
     {
-        //
+        $set_id = $request->set_id;
+        $setTypes = SetType::where('set_id', $set_id)->get();
+        Log::info($setTypes);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function index(){
+        parent::indexData();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Event $event)
-    {
-        //
+    public function store(EventStoreRequest $request){
+        parent::storeData($request);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Event $event)
-    {
-        //
+    public function update(EventUpdateRequest $request, Event $event){
+         parent::updateData($request,$event);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Event $event)
-    {
-        //
+    public function destroy(Event $event){
+         parent::destroyData($event);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Event $event)
-    {
-        //
+    public function search(Request $request){
+         parent::searchData($request);
     }
+
+
 }

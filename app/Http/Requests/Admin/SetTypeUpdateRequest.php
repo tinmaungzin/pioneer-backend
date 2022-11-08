@@ -4,16 +4,18 @@ namespace App\Http\Requests\Admin;
 
 use App\Http\Requests\APIRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\Rule;
 
 
-class TypeStoreRequest extends APIRequest
+class SetTypeUpdateRequest extends APIRequest
 {
+
     public function rules()
     {
         return [
-            'name'=> ['required', Rule::unique('types','name')],
-            'allowed_people' => 'required'
+            'set_id'=>'required',
+            'type_id'=>'required',
+            'price'=>'required',
+            'table_count'=>'required',
         ];
     }
 

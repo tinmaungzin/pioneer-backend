@@ -6,17 +6,15 @@ use App\Http\Requests\APIRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Rule;
 
-
-class TypeStoreRequest extends APIRequest
+class SetUpdateRequest extends APIRequest
 {
+
     public function rules()
     {
         return [
-            'name'=> ['required', Rule::unique('types','name')],
-            'allowed_people' => 'required'
+            'name'=> ['required', Rule::unique('sets','name')->ignore($this->set->id)],
         ];
     }
-
     public function authorize()
     {
         return parent::authorize();

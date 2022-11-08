@@ -6,14 +6,16 @@ use App\Http\Requests\APIRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Rule;
 
-
-class TypeStoreRequest extends APIRequest
+class UserUpdateRequest extends APIRequest
 {
+
     public function rules()
     {
         return [
-            'name'=> ['required', Rule::unique('types','name')],
-            'allowed_people' => 'required'
+            'name'=>'required',
+            'phone_number'=>['required', Rule::unique('users','phone_number')->ignore($this->user->id)],
+            'allowed_table'=>'required',
+            'user_type_id'=>'required',
         ];
     }
 

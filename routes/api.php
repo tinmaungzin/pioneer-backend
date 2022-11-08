@@ -1,10 +1,17 @@
 <?php
 
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\PointItemController;
+use App\Http\Controllers\SetController;
+use App\Http\Controllers\SetTypeController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\TypeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\LoginController;
+use App\Models\PointItem;
 
 Route::group(['prefix'=>'user'], function () {
     Route::post('register',[AuthController::class,'registerWithPhoneNumber']);
@@ -26,14 +33,26 @@ Route::post('admin/login',[LoginController::class,'getAdminLogin']);
 Route::group(['middleware' =>['auth:sanctum','type.user'],'prefix'=>'user'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
 });
-Route::group(['prefix'=>'admin'], function () {
-    Route::resource('staffs',StaffController::class);
-});
-
 
 
 Route::group(['middleware' =>['auth:sanctum','type.admin'],'prefix'=>'admin'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
+    Route::resource('staffs',StaffController::class);
+    Route::post('/staffs/{staff}/change_password',[StaffController::class,'changePassword']);
+
+    Route::resource('types',TypeController::class);
+    Route::resource('packages',PackageController::class);
+    Route::get('all_types', [PackageController::class, 'getAllTypes']);
+    Route::get('all_sets', [PackageController::class, 'getAllSets']);
+
+    Route::resource('sets',SetController::class);
+    Route::resource('point_items',PointItemController::class);
+    Route::resource('set_types', SetTypeController::class);
+
+    Route::resource('users',UserController::class);
+    Route::post('/users/{user}/change_password',[UserController::class,'changePassword']);
+    Route::resource('events',EventController::class);
+
 });
 
 Route::group(['middleware' =>['auth:sanctum','type.receptionist'],'prefix'=>'receptionist'], function () {

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\TypeStoreRequest;
+use App\Http\Requests\Admin\TypeUpdateRequest;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -17,16 +19,16 @@ class TypeController extends BasicController
         parent::indexData();
     }
 
-    public function store(StaffStoreRequest $request){
+    public function store(TypeStoreRequest $request){
         parent::storeData($request);
     }
 
-    public function update(StaffUpdateRequest $request, Staff $staff){
-         parent::updateData($request,$staff);
+    public function update(TypeUpdateRequest $request, Type $type){
+         parent::updateData($request,$type);
     }
 
-    public function destroy(Staff $staff){
-         parent::destroyData($staff);
+    public function destroy(Type $type){
+         parent::destroyData($type);
     }
 
     public function search(Request $request){

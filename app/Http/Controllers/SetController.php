@@ -2,84 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TableBookingEvent;
+use App\Http\Requests\Admin\SetStoreRequest;
+use App\Http\Requests\Admin\SetUpdateRequest;
 use App\Models\Set;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
-class SetController extends Controller
+class SetController extends BasicController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function __construct(){
+        $set = Set::class;
+        parent::__construct($set);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function index(){
+        parent::indexData();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(SetStoreRequest $request){
+        Log::info("test");
+        event(new TableBookingEvent('test'));
+        parent::storeData($request);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Set  $set
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Set $set)
-    {
-        //
+    public function update(SetUpdateRequest $request, Set $set){
+         parent::updateData($request,$set);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Set  $set
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Set $set)
-    {
-        //
+    public function destroy(Set $set){
+         parent::destroyData($set);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Set  $set
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Set $set)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Set  $set
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Set $set)
-    {
-        //
+    public function search(Request $request){
+         parent::searchData($request);
     }
 }

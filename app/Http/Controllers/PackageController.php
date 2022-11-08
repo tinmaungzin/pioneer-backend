@@ -2,84 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\PackageStoreRequest;
+use App\Http\Requests\Admin\PackageUpdateRequest;
 use App\Models\Package;
+use App\Models\Set;
+use App\Models\Type;
 use Illuminate\Http\Request;
 
-class PackageController extends Controller
+class PackageController extends BasicController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function __construct(){
+        $package = Package::class;
+        parent::__construct($package);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function getAllTypes()
     {
-        //
+        $types = Type::all();
+        ($types) ?
+        responseData('types', $types, 200) :
+        responseStatus('No type is found',404);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function getAllSets()
     {
-        //
+        $sets = Set::all();
+        ($sets) ?
+        responseData('sets', $sets, 200) :
+        responseStatus('No set is found',404);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Package $package)
-    {
-        //
+
+    public function index(){
+        parent::indexData();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Package $package)
-    {
-        //
+    public function store(PackageStoreRequest $request){
+        parent::storeData($request);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Package $package)
-    {
-        //
+    public function update(PackageUpdateRequest $request, Package $package){
+         parent::updateData($request,$package);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Package $package)
-    {
-        //
+    public function destroy(Package $package){
+         parent::destroyData($package);
+    }
+
+    public function search(Request $request){
+         parent::searchData($request);
     }
 }

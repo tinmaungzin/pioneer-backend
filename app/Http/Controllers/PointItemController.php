@@ -2,84 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\PointItemStoreRequest;
+use App\Http\Requests\Admin\PointItemUpdateRequest;
 use App\Models\PointItem;
 use Illuminate\Http\Request;
 
-class PointItemController extends Controller
+class PointItemController extends BasicController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function __construct(){
+        $point_item = PointItem::class;
+        parent::__construct($point_item);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function index(){
+        parent::indexData();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(PointItemStoreRequest $request){
+        parent::storeData($request);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PointItem  $pointItem
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PointItem $pointItem)
-    {
-        //
+    public function update(PointItemUpdateRequest $request, PointItem $point_item){
+         parent::updateData($request,$point_item);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\PointItem  $pointItem
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PointItem $pointItem)
-    {
-        //
+    public function destroy(PointItem $point_item){
+         parent::destroyData($point_item);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PointItem  $pointItem
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PointItem $pointItem)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\PointItem  $pointItem
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PointItem $pointItem)
-    {
-        //
+    public function search(Request $request){
+         parent::searchData($request);
     }
 }

@@ -7,13 +7,14 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Rule;
 
 
-class TypeStoreRequest extends APIRequest
+class TypeUpdateRequest extends APIRequest
 {
+
     public function rules()
     {
         return [
-            'name'=> ['required', Rule::unique('types','name')],
-            'allowed_people' => 'required'
+                'name'=> ['required', Rule::unique('types','name')->ignore($this->type->id)],
+                'allowed_people' => 'required'
         ];
     }
 
