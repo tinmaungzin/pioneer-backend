@@ -6,6 +6,7 @@ use App\Http\Controllers\PointItemController;
 use App\Http\Controllers\SetController;
 use App\Http\Controllers\SetTypeController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\TableController;
 use App\Http\Controllers\TypeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\AuthController;
@@ -53,6 +54,8 @@ Route::group(['middleware' =>['auth:sanctum','type.admin'],'prefix'=>'admin'], f
     Route::post('/users/{user}/change_password',[UserController::class,'changePassword']);
     Route::resource('events',EventController::class);
     Route::get('tables_by_set_id/{set}', [EventController::class, 'getTablesBySetId']);
+    Route::get('all_tables', [EventController::class, 'getAllTables']);
+
 
 });
 

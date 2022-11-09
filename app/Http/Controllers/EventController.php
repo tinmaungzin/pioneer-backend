@@ -18,6 +18,13 @@ class EventController extends BasicController
         parent::__construct($event);
     }
 
+    public function getAllTables()
+    {
+        $tables = Table::all();
+        ($tables) ?
+        responseData('tables', $tables, 200) :
+        responseStatus('No table is found',404);
+    }
 
     public function getTablesBySetId(Request $request,Set $set){
         $set_id = $set->id;
