@@ -14,7 +14,6 @@ class TypeController extends BasicController
         parent::__construct($type);
     }
 
-
     public function index(){
         parent::indexData();
     }

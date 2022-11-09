@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\BasicController;
 use App\Http\Requests\Admin\SetTypeStoreRequest;
 use App\Http\Requests\Admin\SetTypeUpdateRequest;
 use App\Models\SetType;
@@ -26,7 +25,6 @@ class SetTypeController extends BasicController
     public function store(SetTypeStoreRequest $request){
         $this->saveData($request);
         responseTrue('successfully created');
-        // parent::storeData($request);
     }
 
     public function update(SetTypeUpdateRequest $request, SetType $set_type){

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Admin\EventStoreRequest;
 use App\Http\Requests\Admin\EventUpdateRequest;
 use App\Models\Event;
+use App\Models\Set;
 use App\Models\SetType;
+use App\Models\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -17,11 +19,25 @@ class EventController extends BasicController
     }
 
 
-    public function getTablesBySetId(Request $request)
-    {
-        $set_id = $request->set_id;
-        $setTypes = SetType::where('set_id', $set_id)->get();
-        Log::info($setTypes);
+    public function getTablesBySetId(Request $request,Set $set){
+        $set_id = $set->id;
+        $price = [];
+        $type_ids = SetType::where('set_id', $set_id)->distinct('type_id')->pluck('type_id');
+        $set_types = SetType::where('set_id', $set_id)->distinct('type_id')->select('type_id','set_id','price')->get();
+        foreach ($set_types as $set_type) {
+            $price[$set_type->type_id] = $set_type->price;
+        }
+        $tables =  Table::with('type')
+            ->whereIn('type_id',$type_ids)
+            ->where('is_available',true)
+            ->select('id','name','type_id')
+            ->get();
+        foreach ($tables as $table){
+            $table->price = $price[$table->type_id];
+            $table->allowed_people = $table->type->allowed_people;
+            UnsetData($table,['type']);
+        }
+        return $tables;
     }
 
     public function index(){

@@ -2,29 +2,25 @@
 
 namespace App\Http\Requests\Admin;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\APIRequest;
+use Illuminate\Contracts\Validation\Validator;
 
-class EventStoreRequest extends FormRequest
+
+class EventStoreRequest extends APIRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return false;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [
-            //
+
         ];
+    }
+    public function authorize()
+    {
+        return parent::authorize();
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        parent::failedValidation($validator);
     }
 }
