@@ -12,10 +12,9 @@ class SetTypeStoreRequest extends APIRequest
     public function rules()
     {
         return [
-            'set_id'=>'required',
+            //'set_price'=>'required',
             'type_id'=>'required',
-            'price'=>'required',
-            'table_count'=>'required',
+            //'table_count'=>'required',
         ];
     }
 

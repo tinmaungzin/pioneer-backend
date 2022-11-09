@@ -8,7 +8,6 @@ use App\Models\SetType;
 use App\Models\Table;
 use App\Models\Type;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class SetTypeController extends BasicController
 {
@@ -41,16 +40,53 @@ class SetTypeController extends BasicController
 
     public function saveData($request)
     {
-        $data = $request->all();
-        $set_type = SetType::create($data);
-        $type = Type::find($data['type_id']);
-        $existing_tables = Table::where('type_id', $set_type->type_id)->get()->count();
-        for ($x = $existing_tables; $x < ($data['table_count'] + $existing_tables) ; $x++) {
-            $table_data['name'] = $type->name . $x+1;
-            $table_data['type_id'] = $data['type_id'];
-            $table_data['is_available'] = 1;
-            Log::info($table_data);
-            Table::create($table_data);
+        $request_set_price = $request->set_price;
+        $request_table_count = $request->table_count;
+        $request_type_id = $request->type_id;
+        if($request_set_price && $request_table_count && $request_type_id ){
+            $type = Type::find($request_type_id);
+            $set_prices = JsonDecode($request->set_price);
+            foreach ($set_prices as $set_price){
+                 SetType::firstOrCreate([
+                    'set_id' => $set_price->set_id,
+                    'type_id'=>$request_type_id],[
+                    'price' => $set_price->price,
+                    'table_count' => $request_table_count,
+                ]);
+            }
+            for($i = 1; $i <= $request_table_count ; $i++ ){
+                Table::create([
+                    'name' => $type->name . $i,
+                    'type_id' => $request_type_id
+                ]);
+            }
+        }
+        if($request_table_count && $request_type_id && (!$request_set_price)){
+            $type = Type::find($request_type_id);
+            $old_count = 0;
+            $set_types = SetType::where('type_id',$request_type_id)->get();
+            foreach ($set_types  as $set_type){
+                $old_count = $set_type->table_count;
+                $set_type->update([
+                    'table_count' => $request_table_count + $old_count,
+                ]);
+            }
+            for($x= 1; $x <= $request_table_count ; $x++ ){
+                Table::create([
+                    'name' => $type->name . ++$old_count,
+                    'type_id' => $request_type_id
+                ]);
+            }
+        }
+        if($request_set_price && $request_type_id && (!$request_table_count)){
+            $set_prices = JsonDecode($request->set_price);
+            foreach ($set_prices as $set_price){
+                SetType::updateOrCreate([
+                    'set_id' => $set_price->set_id,
+                    'type_id'=>$request_type_id],[
+                    'price' => $set_price->price,
+                ]);
+            }
         }
     }
 }
