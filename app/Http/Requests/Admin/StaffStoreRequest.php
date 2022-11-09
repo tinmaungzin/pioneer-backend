@@ -13,7 +13,7 @@ class StaffStoreRequest extends APIRequest
         return [
             'name'=>'required',
             'email'=>['required','email','regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
-                Rule::unique('staffs','email')],
+                Rule::unique('staff','email')],
             'password'=>'required|confirmed|min:6',
         ];
     }

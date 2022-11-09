@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Actions\Image\Image;
-use App\Http\Services\Space\ImageFacade;
-use App\Models\SetType;
 
 class BasicController extends Controller
 {
