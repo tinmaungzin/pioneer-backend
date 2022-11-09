@@ -14,12 +14,12 @@ class Image
 
     public function delete($image)
     {
-        $file = public_path('/images/' . $image);
+        $file = storage_path('/images/' . $image);
         if (file_exists($file)) unlink($file);
     }
 
     public function download($name){
-        return response()->file(public_path().'/images/'.$name);
+        return response()->file(storage_path().'/images/'.$name);
     }
 
 }
