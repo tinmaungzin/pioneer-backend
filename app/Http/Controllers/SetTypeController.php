@@ -18,7 +18,26 @@ class SetTypeController extends BasicController
 
 
     public function index(){
-        parent::indexData();
+        $set_tables = [];
+        $set_types =  SetType::all();
+        $group_set_types =  collect($set_types)->groupBy('type_id')->values();
+        foreach ($group_set_types as $group_set_type){
+            $set_table = new \stdClass();
+            $set_table->type_id = $group_set_type[0]->type_id;
+            $set_table->type_name = $group_set_type[0]->type->name;
+            $set_table->table_count =  $group_set_type[0]->table_count;
+            $set_prices = [];
+            foreach ($group_set_type as $set_type) {
+                $set_price = new \stdClass();
+                $set_price->set_id = $set_type->set_id;
+                $set_price->set_name = $set_type->set->name;
+                $set_price->price = $set_type->price;
+                $set_prices [] = $set_price;
+            }
+            $set_table->set_prices = $set_prices;
+            $set_tables [] = $set_table;
+        }
+        responseData('set_tables',$set_tables,200);
     }
 
     public function store(SetTypeStoreRequest $request){

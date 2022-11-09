@@ -9,7 +9,6 @@ use App\Models\Set;
 use App\Models\SetType;
 use App\Models\Table;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class EventController extends BasicController
 {
