@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('event_tables', function (Blueprint $table) {
             $table->id();
-            $table->char('booking_status',50)->unique();
+            $table->char('booking_status',50)->default("available");
             $table->foreignId('event_id')->nullable()->constrained();
             $table->foreignId('table_id')->nullable()->constrained();
-            $table->foreignId('type_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

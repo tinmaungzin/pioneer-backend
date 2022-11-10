@@ -21,7 +21,6 @@ class SetController extends BasicController
     }
 
     public function store(SetStoreRequest $request){
-        Log::info("test");
         event(new TableBookingEvent('test'));
         parent::storeData($request);
     }

@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\LoginController;
-use App\Models\PointItem;
 
 Route::group(['prefix'=>'user'], function () {
     Route::post('register',[AuthController::class,'registerWithPhoneNumber']);
@@ -20,7 +19,6 @@ Route::group(['prefix'=>'user'], function () {
     Route::post('send_code_by_phone_number',[AuthController::class,'forgetPassword']);
     Route::post('change_password',[AuthController::class,'changePassword']);
     Route::post('social_auth',[AuthController::class,'authWithSocial']);
-    //Route::get('download_image/{image_name}',[UserProfileController::class,'downloadImage']);
 });
 
 Route::post('user/login',[LoginController::class,'getUserLogin']);
@@ -53,6 +51,8 @@ Route::group(['middleware' =>['auth:sanctum','type.admin'],'prefix'=>'admin'], f
     Route::post('/users/{user}/change_password',[UserController::class,'changePassword']);
     Route::resource('events',EventController::class);
     Route::get('tables_by_set_id/{set}', [EventController::class, 'getTablesBySetId']);
+    Route::get('all_tables', [EventController::class, 'getAllTables']);
+
 
 });
 
@@ -75,3 +75,6 @@ Route::group(['middleware' =>['auth:sanctum','type.staff'],'prefix'=>'staff'], f
 Route::group(['middleware' =>['auth:sanctum','type.sales_user'],'prefix'=>'sales_user'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
 });
+
+
+

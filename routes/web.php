@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('download_image/{image_name}',[\App\Http\Controllers\ImageController::class,'downloadImage']);
