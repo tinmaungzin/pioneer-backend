@@ -27,6 +27,14 @@ class EventController extends BasicController
         responseStatus('No table is found',404);
     }
 
+    public function availableEvents()
+    {
+        $events = Event::where('is_available', 1)->get();
+        ($events) ?
+        responseData('events', $events, 200) :
+        responseStatus('No event is found',404);
+    }
+
     public function getTablesBySetId(Request $request,Set $set){
         $set_id = $set->id;
         $price = [];
