@@ -15,11 +15,11 @@ class TableBookingEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     // public $table_id, $marker_id , $table_name, $marker_name;
-    public $test;
+    public $event_table_id;
 
-    public function __construct($test)
+    public function __construct($event_table_id)
     {
-        $this->test = $test;
+        $this->event_table_id = $event_table_id;
     }
 
     public function broadcastOn()

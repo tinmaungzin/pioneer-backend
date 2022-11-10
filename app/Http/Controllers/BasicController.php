@@ -29,6 +29,7 @@ class BasicController extends Controller
             $path = (new Image())->upload($request->photo);
             $data['photo'] = $path;
         }
+        $this->model::create($data);
         responseTrue('successfully created');
     }
 

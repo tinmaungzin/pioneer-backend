@@ -2,84 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TableBookingEvent;
+use App\Http\Requests\Admin\BookingStoreRequest;
+use App\Http\Requests\Admin\BookingUpdateRequest;
 use App\Models\Booking;
+use App\Models\EventTable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
-class BookingController extends Controller
+class BookingController extends BasicController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function __construct(){
+        $booking = Booking::class;
+        parent::__construct($booking);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function index(){
+        parent::indexData();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(BookingStoreRequest $request){
+        $event_table = EventTable::find($request->event_table_id);
+        $event_table->booking_status = $request->booking_status;
+        $event_table->save();
+        event(new TableBookingEvent($request->event_table_id));
+        parent::storeData($request);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Booking  $booking
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Booking $booking)
-    {
-        //
+    public function update(BookingUpdateRequest $request, Booking $booking){
+        $event_table = EventTable::find($request->event_table_id);
+        $event_table->booking_status = $request->booking_status;
+        $event_table->save();
+        responseTrue('successfully updated');
+
+        //  parent::updateData($request,$booking);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Booking  $booking
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Booking $booking)
-    {
-        //
+    public function destroy(Booking $booking){
+         parent::destroyData($booking);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Booking  $booking
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Booking $booking)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Booking  $booking
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Booking $booking)
-    {
-        //
+    public function search(Request $request){
+         parent::searchData($request);
     }
 }

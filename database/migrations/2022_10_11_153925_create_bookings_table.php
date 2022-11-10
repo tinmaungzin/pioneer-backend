@@ -18,6 +18,8 @@ return new class extends Migration
             $table->char('name',50);
             $table->char('phone_number',50)->unique();
             $table->foreignId('event_table_id')->nullable()->constrained();
+            $table->foreignId('user_id')->nullable()->constrained();
+
             $table->timestamps();
         });
     }

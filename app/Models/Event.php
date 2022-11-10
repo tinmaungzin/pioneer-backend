@@ -11,7 +11,7 @@ class Event extends Model
 
     public function tables(){
         return $this->belongsToMany(Table::class,'event_tables')
-            ->withPivot('booking_status');
+            ->withPivot('booking_status', 'id');
     }
 
 }

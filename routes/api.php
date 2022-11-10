@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PointItemController;
@@ -30,6 +31,8 @@ Route::post('admin/login',[LoginController::class,'getAdminLogin']);
 
 Route::group(['middleware' =>['auth:sanctum','type.user'],'prefix'=>'user'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
+    Route::get('available_events', [EventController::class, 'availableEvents']);
+
 });
 
 
@@ -59,6 +62,8 @@ Route::group(['middleware' =>['auth:sanctum','type.admin'],'prefix'=>'admin'], f
 Route::group(['middleware' =>['auth:sanctum','type.receptionist'],'prefix'=>'receptionist'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
     Route::get('available_events', [EventController::class, 'availableEvents']);
+    Route::resource('bookings', BookingController::class);
+
 
 });
 
