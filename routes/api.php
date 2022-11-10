@@ -58,6 +58,8 @@ Route::group(['middleware' =>['auth:sanctum','type.admin'],'prefix'=>'admin'], f
 
 Route::group(['middleware' =>['auth:sanctum','type.receptionist'],'prefix'=>'receptionist'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
+    Route::get('available_events', [EventController::class, 'availableEvents']);
+
 });
 
 Route::group(['middleware' =>['auth:sanctum','type.salesperson'],'prefix'=>'salesperson'], function () {
