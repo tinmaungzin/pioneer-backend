@@ -19,7 +19,7 @@ class PointItemController extends BasicController
     }
 
     public function store(PointItemStoreRequest $request){
-        parent::storeData($request);
+       return  parent::storeData($request);
     }
 
     public function update(PointItemUpdateRequest $request, PointItem $point_item){

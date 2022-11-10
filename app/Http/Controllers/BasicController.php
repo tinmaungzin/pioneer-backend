@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Services\Space\ImageFacade;
-use App\Models\SetType;
+use App\Http\Actions\Image\Image;
 
 class BasicController extends Controller
 {
@@ -27,7 +26,7 @@ class BasicController extends Controller
     public function storeData($request){
         $data = $request->all();
         if($request->has('photo')){
-            $path = ImageFacade::upload($request->photo);
+            $path = (new Image())->upload($request->photo);
             $data['photo'] = $path;
         }
         $this->model::create($data);
@@ -37,9 +36,9 @@ class BasicController extends Controller
     public function updateData($request, $data){
         $input_data = $request->all();
         if($request->has('photo')){
-            $path = ImageFacade::upload($request->photo);
+            $path = (new Image())->upload($request->photo);
             $input_data['photo'] = $path;
-            if($data->photo) ImageFacade::delete($data->photo);
+            if($data->photo)  (new Image())->delete($data->photo);
         }
         $data->update($input_data);
         responseTrue('successfully updated');
@@ -48,7 +47,7 @@ class BasicController extends Controller
     public function destroyData($data){
         if($data){
             if(isset($data->photo) && $data->photo <> null ) {
-                ImageFacade::delete($data->photo);
+                (new Image())->delete($data->photo);
             }
             $data->delete();
             responseTrue('successfully deleted');
@@ -62,5 +61,5 @@ class BasicController extends Controller
         responseData('data',$data,200);
     }
 
-    
+
 }

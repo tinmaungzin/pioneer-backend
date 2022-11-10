@@ -17,7 +17,6 @@ class AuthController extends Controller
     private AuthInterface $auth;
 
     public function __construct(PhoneAuthInterface $phoneAuth,AuthInterface $auth){
-
         $this->phone_auth = $phoneAuth;
         $this->auth = $auth;
     }
