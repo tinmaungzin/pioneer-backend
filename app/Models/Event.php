@@ -14,4 +14,11 @@ class Event extends Model
             ->withPivot('booking_status', 'id');
     }
 
+    public function set(){
+        return $this->belongsTo(Set::class);
+    }
+
+
+
+
 }

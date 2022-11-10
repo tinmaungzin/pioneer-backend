@@ -16,9 +16,7 @@ class ImageController extends Controller
         if (!File::exists($path)) {
             abort(404);
         }
-
         $file = File::get($path);
-        return $file;
         $type = File::mimeType($path);
 
         $response = Response::make($file, 200);

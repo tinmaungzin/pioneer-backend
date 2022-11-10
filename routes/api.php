@@ -53,7 +53,6 @@ Route::group(['middleware' =>['auth:sanctum','type.admin'],'prefix'=>'admin'], f
     Route::resource('users',UserController::class);
     Route::post('/users/{user}/change_password',[UserController::class,'changePassword']);
     Route::resource('events',EventController::class);
-    Route::get('tables_by_set_id/{set}', [EventController::class, 'getTablesBySetId']);
     Route::get('all_tables', [EventController::class, 'getAllTables']);
 
 

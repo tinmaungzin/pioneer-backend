@@ -8,7 +8,7 @@ class Image
         $image_name = uniqid() . '_' . $image->getClientOriginalName();
         $image_name = str_replace(' ', '', $image_name);
         //$image->move(public_path() . '/storage/images', $image_name);
-        $image->move(storage_path() . 'app/public', $image_name);
+        $image->move(storage_path() . '/app/public', $image_name);
         return $image_name;
     }
 

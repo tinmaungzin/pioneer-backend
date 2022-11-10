@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Admin\EventStoreRequest;
 use App\Http\Requests\Admin\EventUpdateRequest;
 use App\Models\Event;
+use App\Models\Package;
 use App\Models\Set;
 use App\Models\SetType;
 use App\Models\Table;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use App\Http\Actions\Image\Image;
 use Carbon\Carbon;
@@ -29,39 +31,28 @@ class EventController extends BasicController
 
     public function availableEvents()
     {
-        $events = Event::where('is_available', 1)->get();
+        $events = Event::with('set')->where('is_available', 1)->get();
+        foreach($events  as $event){
+            foreach ($event->tables  as $table){
+                $table->price =  SetType::where('set_id',$event->set_id)->where('type_id',$table->type_id)->pluck('price')->first();
+                $table->booking_status = $table->pivot->booking_status;
+                $table->allowed_people = Type::where('id',$table->type_id)->pluck('allowed_people')->first();
+                $table->packages = Package::where('type_id',$table->type_id)->get();
+                UnsetData($table,['pivot','created_at','updated_at']);
+            }
+            UnsetData($event,['set','created_at','updated_at']);
+        }
         ($events) ?
         responseData('events', $events, 200) :
         responseStatus('No event is found',404);
     }
 
-    // public function getTablesBySetId(Request $request,Set $set){
-    //     $set_id = $set->id;
-    //     $price = [];
-    //     $type_ids = SetType::where('set_id', $set_id)->distinct('type_id')->pluck('type_id');
-    //     $set_types = SetType::where('set_id', $set_id)->distinct('type_id')->select('type_id','set_id','price')->get();
-    //     foreach ($set_types as $set_type) {
-    //         $price[$set_type->type_id] = $set_type->price;
-    //     }
-    //     $tables =  Table::with('type')
-    //         ->whereIn('type_id',$type_ids)
-    //         ->where('is_available',true)
-    //         ->select('id','name','type_id')
-    //         ->get();
-    //     foreach ($tables as $table){
-    //         $table->price = $price[$table->type_id];
-    //         $table->allowed_people = $table->type->allowed_people;
-    //         UnsetData($table,['type']);
-    //     }
-    //     return $tables;
-    // }
 
     public function index(){
         parent::indexData();
     }
 
     public function store(EventStoreRequest $request){
-        // parent::sav($request);
         $this->saveData($request);
         responseTrue('successfully created');
     }
