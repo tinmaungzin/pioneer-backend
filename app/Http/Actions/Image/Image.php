@@ -2,26 +2,43 @@
 
 namespace App\Http\Actions\Image;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class Image
 {
-    public static function upload($image){
-        $image_name = uniqid() . '_' . $image->getClientOriginalName();
-        $image_name = str_replace(' ', '', $image_name);
-        //$image->move(public_path() . '/storage/images', $image_name);
-        //$image->move(storage_path() . '/app/public', $image_name);
-        Storage::putFile('public',$image);
-        return $image_name;
+    public static function upload($image)
+    {
+        $path = Storage::putFile('public', $image);
+        return str_replace('public/', '', $path);
     }
 
-    public function delete($image){
-        $file = storage_path('/images/' . $image);
-        if (file_exists($file)) unlink($file);
+    public static function delete($image)
+    {
+        $path = self::setUrl($image);
+        if (File::exists($path)) Storage::delete($path);
     }
 
-    public function download($name){
-        return response()->download(storage_path().'/app/'.$name);
+    public static function download($file)
+    {
+        $path =  self::setUrl($file);
+        if (!File::exists($path)) abort(404);
+        $file = File::get($path);
+        $type = File::mimeType($path);
+        $response = \response($file, 200);
+        $response->header("Content-Type", $type);
+        return $response;
     }
+
+    public  static  function setUrl($file){
+        $path = 'public';
+        if ($file) {
+            $url = $path . "/" . $file;
+        } else {
+            $url = $path;
+        }
+        return storage_path("app/") . $url;
+    }
+
 
 }

@@ -26,8 +26,7 @@ class BasicController extends Controller
     public function storeData($request){
         $data = $request->all();
         if($request->has('photo')){
-            $path = (new Image())->upload($request->photo);
-            $data['photo'] = $path;
+            $data['photo'] = Image::upload($request->photo);
         }
         $this->model::create($data);
         responseTrue('successfully created');
@@ -36,9 +35,8 @@ class BasicController extends Controller
     public function updateData($request, $data){
         $input_data = $request->all();
         if($request->has('photo')){
-            $path = $request('photo')->store(storage_path().'app/public');
-            $input_data['photo'] = $path;
-            if($data->photo)  (new Image())->delete($data->photo);
+            $input_data['photo'] = Image::upload($request->photo);
+            if($data->photo)  Image::delete($data->photo);
         }
         $data->update($input_data);
         responseTrue('successfully updated');
@@ -47,7 +45,7 @@ class BasicController extends Controller
     public function destroyData($data){
         if($data){
             if(isset($data->photo) && $data->photo <> null ) {
-                (new Image())->delete($data->photo);
+                Image::delete($data->photo);
             }
             $data->delete();
             responseTrue('successfully deleted');

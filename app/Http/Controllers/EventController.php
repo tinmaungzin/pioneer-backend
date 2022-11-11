@@ -35,6 +35,7 @@ class EventController extends BasicController
         foreach($events  as $event){
             foreach ($event->tables  as $table){
                 $table->price =  SetType::where('set_id',$event->set_id)->where('type_id',$table->type_id)->pluck('price')->first();
+                $table->event_table_id = $table->pivot->id;
                 $table->booking_status = $table->pivot->booking_status;
                 $table->allowed_people = Type::where('id',$table->type_id)->pluck('allowed_people')->first();
                 $table->packages = Package::where('type_id',$table->type_id)->get();
