@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\BookingStoreRequest;
 use App\Http\Requests\Admin\BookingUpdateRequest;
 use App\Models\Booking;
 use App\Models\EventTable;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
