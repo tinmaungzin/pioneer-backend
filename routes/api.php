@@ -31,7 +31,6 @@ Route::post('admin/login',[LoginController::class,'getAdminLogin']);
 
 Route::group(['middleware' =>['auth:sanctum','type.user'],'prefix'=>'user'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
-    Route::get('available_events', [EventController::class, 'availableEvents']);
     Route::resource('bookings', BookingController::class, ['as' => 'user_bookings']);
 
 
@@ -85,6 +84,6 @@ Route::group(['middleware' =>['auth:sanctum','type.sales_user'],'prefix'=>'sales
     Route::get('/',[UserController::class,'getAuthUser']);
 });
 
-
+Route::get('available_events', [EventController::class, 'availableEvents']);
 Route::get('download_image/{image_name}',[\App\Http\Controllers\ImageController::class,'downloadImage']);
 
