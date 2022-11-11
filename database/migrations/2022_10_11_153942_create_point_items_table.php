@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('point_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('point')->default(0);
-            $table->char('photo', 50)->nullable();
+            $table->char('photo', 100)->nullable();
             $table->string('details');
             $table->timestamps();
         });

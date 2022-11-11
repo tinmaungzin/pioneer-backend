@@ -2,13 +2,16 @@
 
 namespace App\Http\Actions\Image;
 
+use Illuminate\Support\Facades\Storage;
+
 class Image
 {
     public static function upload($image){
         $image_name = uniqid() . '_' . $image->getClientOriginalName();
         $image_name = str_replace(' ', '', $image_name);
         //$image->move(public_path() . '/storage/images', $image_name);
-        $image->move(storage_path() . '/app/public', $image_name);
+        //$image->move(storage_path() . '/app/public', $image_name);
+        Storage::putFile('public',$image);
         return $image_name;
     }
 

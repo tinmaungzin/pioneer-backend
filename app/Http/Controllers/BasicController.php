@@ -36,7 +36,7 @@ class BasicController extends Controller
     public function updateData($request, $data){
         $input_data = $request->all();
         if($request->has('photo')){
-            $path = (new Image())->upload($request->photo);
+            $path = $request('photo')->store(storage_path().'app/public');
             $input_data['photo'] = $path;
             if($data->photo)  (new Image())->delete($data->photo);
         }

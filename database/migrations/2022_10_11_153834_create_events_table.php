@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('set_id')->nullable()->constrained();
             $table->unsignedBigInteger('walk_in_price')->default(0);
             $table->boolean('is_available')->default(true);
-            $table->char('photo', 50)->nullable();
+            $table->char('photo', 100)->nullable();
             $table->timestamps();
         });
     }
