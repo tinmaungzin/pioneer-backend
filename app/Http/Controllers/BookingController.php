@@ -34,6 +34,7 @@ class BookingController extends BasicController
         $event_table = EventTable::find($request->event_table_id);
         $event_table->booking_status = $request->booking_status;
         $event_table->save();
+        event(new TableBookingEvent($request->event_table_id));
         responseTrue('successfully updated');
 
         //  parent::updateData($request,$booking);
