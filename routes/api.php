@@ -63,8 +63,7 @@ Route::group(['middleware' =>['auth:sanctum','type.receptionist'],'prefix'=>'rec
     Route::get('/',[UserController::class,'getAuthUser']);
     Route::get('available_events', [EventController::class, 'availableEvents']);
     Route::resource('bookings', BookingController::class);
-
-
+    Route::post("bookingByEventTableId", [BookingController::class, "getBookingByEventTableId"]);
 });
 
 Route::group(['middleware' =>['auth:sanctum','type.salesperson'],'prefix'=>'salesperson'], function () {
@@ -82,6 +81,8 @@ Route::group(['middleware' =>['auth:sanctum','type.staff'],'prefix'=>'staff'], f
 
 Route::group(['middleware' =>['auth:sanctum','type.sales_user'],'prefix'=>'sales_user'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
+    Route::post('/users/{user}/change_password',[UserController::class,'changePassword']);
+
 });
 
 Route::get('available_events', [EventController::class, 'availableEvents']);

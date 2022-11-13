@@ -19,7 +19,8 @@ class UserSeeder extends Seeder
             'name' => 'User',
             'phone_number' => '09961996949',
             'user_type_id' => 1,
-            'password' => 'password'
+            'password' => 'password',
+            'balance' => 100000000
         ]);
 
         User::create([

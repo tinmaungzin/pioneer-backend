@@ -19,6 +19,8 @@ return new class extends Migration
             $table->char('phone_number',50)->nullable();
             $table->foreignId('event_table_id')->nullable()->constrained();
             $table->foreignId('user_id')->nullable()->constrained();
+            $table->char('photo', 100)->nullable();
+            $table->boolean('use_balance')->default(0);
 
             $table->timestamps();
         });

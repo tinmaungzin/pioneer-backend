@@ -26,7 +26,8 @@ class BasicController extends Controller
     public function storeData($request){
         $data = $request->all();
         if($request->has('photo')){
-            $data['photo'] = Image::upload($request->photo);
+            $path = (new Image())->upload($request->photo);
+            $data['photo'] = $path;
         }
         $this->model::create($data);
         responseTrue('successfully created');
