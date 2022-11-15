@@ -59,7 +59,12 @@ class BookingController extends BasicController
             if($user)
             {
                 $user->point = $user->point + $points;
-                if($booking->use_balance == 1) $user->balance = $user->balance - $price;
+                if($booking->use_balance == 1)
+                {
+                    if($user->balance >= $price) $user->balance = $user->balance - $price;
+                    else responseFalse("Not enough balance!");
+                }
+
                 $user->save();
             }
         }
@@ -100,7 +105,6 @@ class BookingController extends BasicController
 
     public function getBookingsForReport(Request $request, BookingFilters $filters)
     {
-        Log::info($request->all());
         $bookings = Booking::filter($filters)->whereRelation('event_table', 'booking_status', '=', 'confirmed')->orderBy("created_at", "desc")->get();
         $total = 0;
         foreach($bookings  as $booking){

@@ -21,8 +21,8 @@ if(!function_exists('responseStatus')){
 }
 
 if(!function_exists('responseFalse')){
-    function responseFalse(){
-        return responseData('message','Something is wrong at Server',500);
+    function responseFalse($message = 'Something is wrong at Server'){
+        return responseData('message',$message,500);
     }
 }
 
