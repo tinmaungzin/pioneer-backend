@@ -86,7 +86,8 @@ class BookingController extends BasicController
     public function getBookingByUserId()
     {
         $user_id = request("user_id");
-        $bookings = Booking::where("user_id", $user_id)->whereRelation('event_table', 'booking_status', '=', 'confirmed')->get();
+        if(request("type") == "all") $bookings = Booking::where("user_id", $user_id)->orderBy("created_at", "desc")->get();
+        else $bookings = Booking::where("user_id", $user_id)->whereRelation('event_table', 'booking_status', '=', 'confirmed')->orderBy("created_at", "desc")->get();
         $total = 0;
         foreach($bookings  as $booking){
             $booking->price = SetType::where('set_id',$booking->event_table->event->set_id)->where('type_id',$booking->event_table->table->type_id)->pluck('price')->first();
@@ -100,7 +101,7 @@ class BookingController extends BasicController
     public function getBookingsForReport(Request $request, BookingFilters $filters)
     {
         Log::info($request->all());
-        $bookings = Booking::filter($filters)->whereRelation('event_table', 'booking_status', '=', 'confirmed')->get();
+        $bookings = Booking::filter($filters)->whereRelation('event_table', 'booking_status', '=', 'confirmed')->orderBy("created_at", "desc")->get();
         $total = 0;
         foreach($bookings  as $booking){
             $booking->price = SetType::where('set_id',$booking->event_table->event->set_id)->where('type_id',$booking->event_table->table->type_id)->pluck('price')->first();

@@ -73,12 +73,12 @@ Route::group(['middleware' =>['auth:sanctum','type.salesperson'],'prefix'=>'sale
 
 Route::group(['middleware' =>['auth:sanctum','type.all'],'prefix'=>'all'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
+    Route::post("bookingByUserId", [BookingController::class, "getBookingByUserId"]);
 });
 
 Route::group(['middleware' =>['auth:sanctum','type.staff'],'prefix'=>'staff'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
     Route::resource('users',UserController::class);
-    Route::post("bookingByUserId", [BookingController::class, "getBookingByUserId"]);
     Route::post("bookingsForReport", [BookingController::class, "getBookingsForReport"]);
     Route::get('all_events', [EventController::class, 'getAllEvents']);
 
