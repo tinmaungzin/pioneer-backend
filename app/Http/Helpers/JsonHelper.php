@@ -8,6 +8,12 @@ if(!function_exists('responseData')){
     }
 }
 
+if(!function_exists('responseArrayData')){
+    function responseArrayData($array,$status){
+        return response()->json($array,$status)->send() && exit(1);
+    }
+}
+
 if(!function_exists('responseStatus')){
     function responseStatus($message,$status){
         return responseData('message',$message,$status);

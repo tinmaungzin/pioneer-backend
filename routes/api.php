@@ -31,6 +31,8 @@ Route::post('admin/login',[LoginController::class,'getAdminLogin']);
 
 Route::group(['middleware' =>['auth:sanctum','type.user'],'prefix'=>'user'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
+    Route::post('/users/{user}/change_password',[UserController::class,'changePassword']);
+
 
 
 });
@@ -50,9 +52,8 @@ Route::group(['middleware' =>['auth:sanctum','type.admin'],'prefix'=>'admin'], f
     Route::resource('point_items',PointItemController::class);
     Route::resource('set_types', SetTypeController::class);
 
-    Route::resource('users',UserController::class);
-    Route::post('/users/{user}/change_password',[UserController::class,'changePassword']);
     Route::resource('events',EventController::class);
+    Route::post("events/{event}", [EventController::class, 'update']);
     Route::get('all_tables', [EventController::class, 'getAllTables']);
 
 
@@ -76,11 +77,15 @@ Route::group(['middleware' =>['auth:sanctum','type.all'],'prefix'=>'all'], funct
 
 Route::group(['middleware' =>['auth:sanctum','type.staff'],'prefix'=>'staff'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
+    Route::resource('users',UserController::class);
+    Route::post("bookingByUserId", [BookingController::class, "getBookingByUserId"]);
+    Route::post("bookingsForReport", [BookingController::class, "getBookingsForReport"]);
+    Route::get('all_events', [EventController::class, 'getAllEvents']);
+
 });
 
 Route::group(['middleware' =>['auth:sanctum','type.sales_user'],'prefix'=>'sales_user'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
-    Route::post('/users/{user}/change_password',[UserController::class,'changePassword']);
     Route::resource('bookings', BookingController::class, ['as' => 'user_bookings']);
 
 });

@@ -13,6 +13,7 @@ use App\Models\Type;
 use Illuminate\Http\Request;
 use App\Http\Actions\Image\Image;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class EventController extends BasicController
 {
@@ -27,6 +28,14 @@ class EventController extends BasicController
         ($tables) ?
         responseData('tables', $tables, 200) :
         responseStatus('No table is found',404);
+    }
+
+    public function getAllEvents()
+    {
+        $events = Event::all();
+        ($events) ?
+        responseData('events', $events, 200) :
+        responseStatus('No events is found',404);
     }
 
     public function availableEvents()
@@ -59,7 +68,8 @@ class EventController extends BasicController
     }
 
     public function update(EventUpdateRequest $request, Event $event){
-         parent::updateData($request,$event);
+        $this->saveData($request, $event);
+        responseTrue('successfully updated');
     }
 
     public function destroy(Event $event){
@@ -70,7 +80,7 @@ class EventController extends BasicController
          parent::searchData($request);
     }
 
-    public function saveData($request)
+    public function saveData($request, $event = null)
     {
         $data = $request->all();
         if($request->has('photo')){
@@ -78,13 +88,14 @@ class EventController extends BasicController
             $data['photo'] = $path;
         }
         $data['date'] = Carbon::parse($data['date']);
-        $event =  $this->event::create($data);
+        if($event) $event->update($data);
+        else $event = $this->event::create($data);
         if($request->tables)
         {
             $tables = JsonDecode($request->tables);
+            $event->tables()->detach();
             $event->tables()->attach($tables);
         }
-
     }
 
 

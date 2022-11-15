@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\TableBookingEvent;
+use App\Filters\BookingFilters;
 use App\Http\Requests\Admin\BookingStoreRequest;
 use App\Http\Requests\Admin\BookingUpdateRequest;
 use App\Models\Booking;
@@ -79,6 +80,34 @@ class BookingController extends BasicController
         $booking = Booking::where("event_table_id", $event_table_id)->orderBy("created_at", "desc")->first();
         ($booking) ?
         responseData('booking', $booking, 200) :
+        responseStatus('No booking is found',404);
+    }
+
+    public function getBookingByUserId()
+    {
+        $user_id = request("user_id");
+        $bookings = Booking::where("user_id", $user_id)->whereRelation('event_table', 'booking_status', '=', 'confirmed')->get();
+        $total = 0;
+        foreach($bookings  as $booking){
+            $booking->price = SetType::where('set_id',$booking->event_table->event->set_id)->where('type_id',$booking->event_table->table->type_id)->pluck('price')->first();
+            $total = $total + $booking->price;
+        }
+        ($bookings) ?
+        responseArrayData( array("bookings" => $bookings, "total" => $total) , 200) :
+        responseStatus('No booking is found',404);
+    }
+
+    public function getBookingsForReport(Request $request, BookingFilters $filters)
+    {
+        Log::info($request->all());
+        $bookings = Booking::filter($filters)->whereRelation('event_table', 'booking_status', '=', 'confirmed')->get();
+        $total = 0;
+        foreach($bookings  as $booking){
+            $booking->price = SetType::where('set_id',$booking->event_table->event->set_id)->where('type_id',$booking->event_table->table->type_id)->pluck('price')->first();
+            $total = $total + $booking->price;
+        }
+        ($bookings) ?
+        responseArrayData( array("bookings" => $bookings, "total" => $total) , 200) :
         responseStatus('No booking is found',404);
     }
 }

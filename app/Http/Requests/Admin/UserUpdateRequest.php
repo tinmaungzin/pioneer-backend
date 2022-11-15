@@ -12,10 +12,10 @@ class UserUpdateRequest extends APIRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'phone_number'=>['required', Rule::unique('users','phone_number')->ignore($this->user->id)],
-            'allowed_table'=>'required',
-            'user_type_id'=>'required',
+            // 'name'=>'required',
+            // 'phone_number'=>['required', Rule::unique('users','phone_number')->ignore($this->user->id)],
+            // 'allowed_table'=>'required',
+            // 'user_type_id'=>'required',
         ];
     }
 
