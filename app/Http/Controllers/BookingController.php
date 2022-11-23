@@ -46,7 +46,7 @@ class BookingController extends BasicController
         if($request->booking_status == "available" && $request->customers_left == 0 )
         {
             $points = round($price / 1000) ;
-            if($user)
+            if($user && $user->user_type->id == 1)
             {
                 $user->point = $user->point - $points;
                 if($booking->use_balance == 1) $user->balance = $user->balance + $price;
@@ -56,7 +56,7 @@ class BookingController extends BasicController
         if($request->booking_status == "confirmed")
         {
             $points = round($price / 1000) ;
-            if($user)
+            if($user && $user->user_type->id == 1)
             {
                 $user->point = $user->point + $points;
                 if($booking->use_balance == 1)
