@@ -43,20 +43,22 @@ class BookingController extends BasicController
         $price = SetType::where('set_id',$event->set_id)->where('type_id',$table->type_id)->pluck('price')->first();
         $user = $booking->user;
         Log::info($booking);
-        if($request->booking_status == "available" && $request->customers_left == 0 )
+        $auth_user = $user && $user->user_type->id == 1;
+        $points = round($price / 1000) ;
+        if($request->booking_status == "available" )
         {
-            $points = round($price / 1000) ;
-            if($user)
-            {
-                $user->point = $user->point - $points;
-                if($booking->use_balance == 1) $user->balance = $user->balance + $price;
-                $user->save();
+            if( $request->customers_left <> 1 ){
+                if($auth_user) {
+                    $user->point = $user->point - $points;
+                    if($booking->use_balance == 1) $user->balance = $user->balance + $price;
+                    $user->save();
+                }
             }
         }
+
         if($request->booking_status == "confirmed")
         {
-            $points = round($price / 1000) ;
-            if($user)
+            if($auth_user)
             {
                 $user->point = $user->point + $points;
                 if($booking->use_balance == 1)
