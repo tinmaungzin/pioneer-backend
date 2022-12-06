@@ -45,7 +45,6 @@ Route::group(['middleware' =>['auth:sanctum','type.admin'],'prefix'=>'admin'], f
 
     Route::resource('types',TypeController::class);
     Route::resource('packages',PackageController::class);
-    Route::get('all_types', [PackageController::class, 'getAllTypes']);
     Route::get('all_sets', [PackageController::class, 'getAllSets']);
 
     Route::resource('sets',SetController::class);
@@ -61,9 +60,6 @@ Route::group(['middleware' =>['auth:sanctum','type.admin'],'prefix'=>'admin'], f
 
 Route::group(['middleware' =>['auth:sanctum','type.receptionist'],'prefix'=>'receptionist'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
-    Route::get('available_events', [EventController::class, 'availableEvents']);
-    Route::resource('bookings', BookingController::class);
-    Route::post("bookingByEventTableId", [BookingController::class, "getBookingByEventTableId"]);
 });
 
 Route::group(['middleware' =>['auth:sanctum','type.salesperson'],'prefix'=>'salesperson'], function () {
@@ -74,6 +70,7 @@ Route::group(['middleware' =>['auth:sanctum','type.salesperson'],'prefix'=>'sale
 Route::group(['middleware' =>['auth:sanctum','type.all'],'prefix'=>'all'], function () {
     Route::get('/',[UserController::class,'getAuthUser']);
     Route::post("bookingByUserId", [BookingController::class, "getBookingByUserId"]);
+
 });
 
 Route::group(['middleware' =>['auth:sanctum','type.staff'],'prefix'=>'staff'], function () {
@@ -81,6 +78,8 @@ Route::group(['middleware' =>['auth:sanctum','type.staff'],'prefix'=>'staff'], f
     Route::resource('users',UserController::class);
     Route::post("bookingsForReport", [BookingController::class, "getBookingsForReport"]);
     Route::get('all_events', [EventController::class, 'getAllEvents']);
+    Route::resource('bookings', BookingController::class);
+    Route::post("bookingByEventTableId", [BookingController::class, "getBookingByEventTableId"]);
 
 });
 
@@ -91,5 +90,7 @@ Route::group(['middleware' =>['auth:sanctum','type.sales_user'],'prefix'=>'sales
 });
 
 Route::get('available_events', [EventController::class, 'availableEvents']);
+Route::get('all_types', [PackageController::class, 'getAllTypes']);
+
 Route::get('download_image/{image_name}',[\App\Http\Controllers\ImageController::class,'downloadImage']);
 

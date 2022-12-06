@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $fillable=['name', 'date', 'set_id', 'walk_in_price', 'is_available', 'photo'];
+    protected $fillable=['name', 'date', 'set_id', 'walk_in_price', 'is_available', 'photo', 'layout_photo'];
     protected $with = ['tables'];
 
     public function tables(){
