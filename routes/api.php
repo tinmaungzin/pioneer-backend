@@ -42,7 +42,7 @@ Route::group(['middleware' =>['auth:sanctum','type.admin'],'prefix'=>'admin'], f
     Route::get('/',[UserController::class,'getAuthUser']);
     Route::resource('staffs',StaffController::class);
     Route::post('/staffs/{staff}/change_password',[StaffController::class,'changePassword']);
-
+    Route::post('/users/{user}/change_password',[UserController::class,'changePassword']);
     Route::resource('types',TypeController::class);
     Route::resource('packages',PackageController::class);
     Route::get('all_sets', [PackageController::class, 'getAllSets']);
