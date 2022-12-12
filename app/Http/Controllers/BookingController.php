@@ -47,7 +47,6 @@ class BookingController extends BasicController
         $price = SetType::where('set_id', $event->set_id)->where('type_id', $table->type_id)->pluck('price')->first();
         $user = $booking->user;
         if ($request->booking_status == "available" && $request->has('customers_left') && $request->customers_left == 0) {
-            Log::info("here");
 
             $points = round($price / 1000);
             if ($user && $user->user_type->id == 1) {
