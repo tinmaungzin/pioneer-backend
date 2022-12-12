@@ -13,7 +13,6 @@ class  PhoneAuthRepository implements PhoneAuthInterface
         $data['user_type_id'] = 1;
         $user = UserFacade::create($data);
         $is_send_code = $this->sendCodeBySMS($user);
-        return  $is_send_code;
         return  ($is_send_code ) ? responseData('user_id', $user->id, 200) : responseFalse();
     }
 

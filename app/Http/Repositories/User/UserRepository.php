@@ -30,8 +30,10 @@ class UserRepository implements UserInterface
     public function create($data)
     {
         $user =  User::create($data);
-        $user->name =  'user_'.$user->id;
-        $user->save();
+        if($user->name == null){
+            $user->name =  'user_'.$user->id;
+            $user->save();
+        }
         return $user;
     }
 

@@ -50,7 +50,7 @@ class BookingController extends BasicController
             if( $request->customers_left <> 1 ){
                 if($auth_user) {
                     $user->point = $user->point - $points;
-                    if($booking->use_balance == 1) $user->balance = $user->balance + $price;
+                    if($booking->use_balance == 1 ) $user->balance = $user->balance + $price;
                     $user->save();
                 }
             }
