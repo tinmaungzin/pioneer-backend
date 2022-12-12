@@ -6,7 +6,7 @@ use App\Http\Actions\SMSPoh\SMSVerification;
 use App\Http\Services\User\UserFacade;
 use Illuminate\Support\Facades\Hash;
 
-class PhoneAuthRepository implements PhoneAuthInterface
+class  PhoneAuthRepository implements PhoneAuthInterface
 {
     public function sendCodeAndReturnUser($data){
         $data ['verify_code'] = RandomDigits() ;
