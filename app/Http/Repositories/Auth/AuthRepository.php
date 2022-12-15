@@ -25,9 +25,6 @@ class AuthRepository implements  AuthInterface
         $type = $this->setType($role);
         $auth_user = $this->findAuthUser($data,$type,$role);
         if ($auth_user) {
-            if($auth_user->is_verified == 0) {
-                responseStatus('This phone number is not verified yet!',401);
-            }
             if (Hash::check($data->password, $auth_user->password)) {
                 return $auth_user;
             } else {
