@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->unsignedBigInteger('allowed_table')->default(0);
             $table->foreignId('user_type_id')->constrained();
-            $table->boolean('is_archived')->default(true);
+            $table->boolean('is_archived')->default(false);
             $table->unsignedBigInteger('point')->default(0);
             $table->unsignedBigInteger('balance')->default(0);
             $table->char('verify_code',50)->nullable();

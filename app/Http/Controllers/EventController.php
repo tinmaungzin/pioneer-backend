@@ -86,6 +86,10 @@ class EventController extends BasicController
             $path = (new Image())->upload($request->photo);
             $data['photo'] = $path;
         }
+        if($request->has('layout_photo')){
+            $path = (new Image())->upload($request->layout_photo);
+            $data['layout_photo'] = $path;
+        }
         $data['date'] = Carbon::parse($data['date']);
         if($event) $event->update($data);
         else $event = $this->event::create($data);

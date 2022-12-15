@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('walk_in_price')->default(0);
             $table->boolean('is_available')->default(true);
             $table->char('photo', 100)->nullable();
+            $table->char('layout_photo', 100)->nullable();
             $table->timestamps();
         });
     }
