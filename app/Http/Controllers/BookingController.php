@@ -33,12 +33,29 @@ class BookingController extends BasicController
         $event_table = EventTable::find($request->event_table_id);
         $event_table->booking_status = $request->booking_status;
         $event_table->save();
-        event(new TableBookingEvent($request->event_table_id));
-        parent::storeData($request);
+        // event(new TableBookingEvent($request->event_table_id));
+        $booking = Booking::create($request->all());
+        $user = $booking->user;
+        $event = Event::find($event_table->event_id);
+        $table = Table::find($event_table->table_id);
+        $price = SetType::where('set_id', $event->set_id)->where('type_id', $table->type_id)->pluck('price')->first();
+        // parent::storeData($request);
+        if ($request->booking_status == "confirmed") {
+            $points = round($price / 1000);
+            if ($user && $user->user_type->id == 1) {
+                $user->point = $user->point + $points;
+                if ($booking->use_balance == 1) {
+                    if ($user->balance >= $price) $user->balance = $user->balance - $price;
+                    else responseFalse("Not enough balance!");
+                }
+                $user->save();
+            }
+        }
     }
 
     public function update(BookingUpdateRequest $request, Booking $booking)
     {
+        Log::info("update");
         $event_table = EventTable::find($request->event_table_id);
         $event_table->booking_status = $request->booking_status;
         $event_table->save();
@@ -58,6 +75,7 @@ class BookingController extends BasicController
         if ($request->booking_status == "confirmed") {
             $points = round($price / 1000);
             if ($user && $user->user_type->id == 1) {
+
                 $user->point = $user->point + $points;
                 if ($booking->use_balance == 1) {
                     if ($user->balance >= $price) $user->balance = $user->balance - $price;
