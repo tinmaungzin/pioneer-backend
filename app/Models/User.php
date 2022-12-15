@@ -20,7 +20,8 @@ class User extends Authenticatable
         'is_archived',
         'point',
         'balance',
-        'verify_code'
+        'verify_code',
+        'is_verified'
     ];
 
     protected $hidden = [

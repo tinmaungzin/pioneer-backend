@@ -6,14 +6,13 @@ use App\Http\Requests\Admin\EventStoreRequest;
 use App\Http\Requests\Admin\EventUpdateRequest;
 use App\Models\Event;
 use App\Models\Package;
-use App\Models\Set;
 use App\Models\SetType;
 use App\Models\Table;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use App\Http\Actions\Image\Image;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
+
 
 class EventController extends BasicController
 {

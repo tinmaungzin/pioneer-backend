@@ -25,13 +25,16 @@ class AuthRepository implements  AuthInterface
         $type = $this->setType($role);
         $auth_user = $this->findAuthUser($data,$type,$role);
         if ($auth_user) {
+            if($auth_user->is_verified == 0) {
+                responseStatus('This phone number is not verified yet!',401);
+            }
             if (Hash::check($data->password, $auth_user->password)) {
                 return $auth_user;
             } else {
-                responseStatus('Password is not correct',422);
+                responseStatus('Password is not corrected',422);
             }
         }
-        responseStatus('The given data is not exists',422);
+        responseStatus('This phone number is not exists',422);
     }
 
     public function findAuthUser($data,$type,$role){
@@ -52,7 +55,7 @@ class AuthRepository implements  AuthInterface
     }
 
     public function createToken($auth_user,$role){
-        return  $auth_user->createToken('Vox Access Token',['role:'.$role]);
+        return  $auth_user->createToken('Pioneer Access Token',['role:'.$role]);
     }
 
     public function getModelData($data){
