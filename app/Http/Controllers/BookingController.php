@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\TableBookingEvent;
 use App\Filters\BookingFilters;
+use App\Http\Actions\Image\Image;
 use App\Http\Requests\Admin\BookingStoreRequest;
 use App\Http\Requests\Admin\BookingUpdateRequest;
 use App\Models\Booking;
@@ -34,7 +35,12 @@ class BookingController extends BasicController
         $event_table->booking_status = $request->booking_status;
         $event_table->save();
         // event(new TableBookingEvent($request->event_table_id));
-        $booking = Booking::create($request->all());
+        $data = $request->all();
+        if($request->has('photo')){
+            $path = (new Image())->upload($request->photo);
+            $data['photo'] = $path;
+        }
+        $booking = Booking::create($data);
         $user = $booking->user;
         $event = Event::find($event_table->event_id);
         $table = Table::find($event_table->table_id);
@@ -55,7 +61,6 @@ class BookingController extends BasicController
 
     public function update(BookingUpdateRequest $request, Booking $booking)
     {
-        Log::info("update");
         $event_table = EventTable::find($request->event_table_id);
         $event_table->booking_status = $request->booking_status;
         $event_table->save();
@@ -64,7 +69,6 @@ class BookingController extends BasicController
         $price = SetType::where('set_id', $event->set_id)->where('type_id', $table->type_id)->pluck('price')->first();
         $user = $booking->user;
         if ($request->booking_status == "available" && $request->has('customers_left') && $request->customers_left == 0) {
-
             $points = round($price / 1000);
             if ($user && $user->user_type->id == 1) {
                 $user->point = $user->point - $points;
@@ -75,7 +79,6 @@ class BookingController extends BasicController
         if ($request->booking_status == "confirmed") {
             $points = round($price / 1000);
             if ($user && $user->user_type->id == 1) {
-
                 $user->point = $user->point + $points;
                 if ($booking->use_balance == 1) {
                     if ($user->balance >= $price) $user->balance = $user->balance - $price;

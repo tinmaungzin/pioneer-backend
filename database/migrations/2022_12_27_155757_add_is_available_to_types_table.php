@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_verified')->default(0);
+        Schema::table('types', function (Blueprint $table) {
+            $table->boolean('is_available')->default(0);
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_verified');
+        Schema::table('types', function (Blueprint $table) {
+            $table->dropColumn('is_available');
         });
     }
 };
