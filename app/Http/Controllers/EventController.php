@@ -12,7 +12,8 @@ use App\Models\Type;
 use Illuminate\Http\Request;
 use App\Http\Actions\Image\Image;
 use Carbon\Carbon;
-
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class EventController extends BasicController
 {
@@ -62,8 +63,8 @@ class EventController extends BasicController
     }
 
     public function store(EventStoreRequest $request){
-        $this->saveData($request);
-        responseTrue('successfully created');
+            $this->saveData($request);
+            responseTrue('successfully created');
     }
 
     public function update(EventUpdateRequest $request, Event $event){
@@ -91,14 +92,20 @@ class EventController extends BasicController
             $data['layout_photo'] = $path;
         }
         $data['date'] = Carbon::parse($data['date']);
-        if($event) $event->update($data);
-        else $event = $this->event::create($data);
-        if($request->tables)
+        try
         {
-            $tables = JsonDecode($request->tables);
-            $event->tables()->detach();
-            $event->tables()->attach($tables);
+            if($event) $event->update($data);
+            else $event = $this->event::create($data);
+            if($request->tables && $event)
+            {
+                $tables = JsonDecode($request->tables);
+                $event->tables()->detach();
+                $event->tables()->attach($tables);
+            }
+        }catch(Exception $e){
+            responseFalse("Invalid or incomplete input!");
         }
+
     }
 
 
