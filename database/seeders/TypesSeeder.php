@@ -18,18 +18,22 @@ class TypesSeeder extends Seeder
         Type::create([
             'name'=>'VIP',
             'allowed_people' => 5,
+            'is_available' => 1
         ]);
         Type::create([
             'name'=>'LVIP',
             'allowed_people' => 5,
+            'is_available' => 1
         ]);
         Type::create([
             'name'=>'UVIP',
             'allowed_people' => 5,
+            'is_available' => 1
         ]);
         Type::create([
             'name'=>'WWIP',
             'allowed_people' => 5,
+            'is_available' => 1
         ]);
     }
 }
