@@ -24,7 +24,7 @@ class EventController extends BasicController
 
     public function getAllTables()
     {
-        $tables = Table::all();
+        $tables = Table::orderBy("name")->get();
         ($tables) ?
         responseData('tables', $tables, 200) :
         responseStatus('No table is found',404);
