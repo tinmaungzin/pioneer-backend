@@ -24,6 +24,7 @@ Route::group(['prefix'=>'user'], function () {
 
 Route::post('user/login',[LoginController::class,'getUserLogin']);
 Route::post('salesperson/login',[LoginController::class,'getSalespersonLogin']);
+Route::post('login',[LoginController::class,'getMobileLogin']);
 Route::post('receptionist/login',[LoginController::class,'getReceptionistLogin']);
 Route::post('admin/login',[LoginController::class,'getAdminLogin']);
 
