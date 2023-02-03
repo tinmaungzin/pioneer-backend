@@ -39,7 +39,7 @@ class LoginController extends Controller
             if($type_id ==  1){
                 return $this->auth->login($request,'user');
             }
-            return $this->auth->login($request,'receptionist');
+            return $this->auth->login($request,'salesperson');
         }
         responseStatus('This phone number is not exists',422);
     }
