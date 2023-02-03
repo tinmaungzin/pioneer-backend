@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Auth\AuthInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -27,5 +28,19 @@ class LoginController extends Controller
 
     public function getSalespersonLogin (Request $request){
         return $this->auth->login($request,'salesperson');
+    }
+
+    public function getMobileLogin(Request $request)
+    {
+        $phone_number = $request->phone_number;
+        $user = User::where('phone_number',$phone_number)->first();
+        if($user){
+            $type_id = $user->user_type_id;
+            if($type_id ==  1){
+                return $this->auth->login($request,'user');
+            }
+            return $this->auth->login($request,'receptionist');
+        }
+        responseStatus('This phone number is not exists',422);
     }
 }
