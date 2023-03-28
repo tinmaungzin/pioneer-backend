@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Package extends Model
 {
     use HasFactory;
-    protected $fillable=['name', 'details','type_id'];
+    protected $fillable=['name', 'photo','type_id'];
     protected $with = ['type'];
 
     public function type()

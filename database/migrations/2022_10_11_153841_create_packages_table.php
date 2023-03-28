@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
             $table->char('name',50)->unique();
-            $table->string('details');
+            $table->char('photo');
             $table->foreignId('type_id')->nullable()->constrained();
             $table->timestamps();
         });

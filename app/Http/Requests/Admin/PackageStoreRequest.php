@@ -14,7 +14,7 @@ class PackageStoreRequest extends APIRequest
     {
         return [
             'name'=> ['required', Rule::unique('packages','name')],
-            'details'=>'required',
+            'photo'=>'required',
             'type_id'=>'required',
         ];
     }
