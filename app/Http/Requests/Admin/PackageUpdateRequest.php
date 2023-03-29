@@ -13,7 +13,7 @@ class PackageUpdateRequest extends APIRequest
     {
         return [
             'name'=> ['required', Rule::unique('packages','name')->ignore($this->package->id)],
-            'photo'=>'required',
+            //'photo'=>'required',
             'type_id'=>'required',
         ];
     }
