@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use App\Http\Actions\Image\Image;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\Log;
 
 class EventController extends BasicController
 {
@@ -101,8 +100,8 @@ class EventController extends BasicController
             $data['layout_photo'] = $path;
         }
         $data['date'] = Carbon::parse($data['date']);
-        try
-        {
+//        try
+//        {
             if($event) $event->update($data);
             else $event = $this->event::create($data);
             if($request->tables && $event)
@@ -111,9 +110,9 @@ class EventController extends BasicController
                 $event->tables()->detach();
                 $event->tables()->attach($tables);
             }
-        }catch(Exception $e){
-            responseFalse("Invalid or incomplete input!");
-        }
+//        }catch(Exception $e){
+//            responseFalse("Invalid or incomplete input!");
+//        }
 
     }
 
