@@ -41,6 +41,7 @@ class EventController extends BasicController
     public function availableEvents()
     {
         $events = Event::with('set')->where('is_available', 1)->get();
+        // Log::info($events);
         $available_events = [];
         foreach($events  as $event){
             $now = now()->format('Y-m-d h:i:s');
@@ -59,6 +60,7 @@ class EventController extends BasicController
             }
 
         }
+        Log::info($available_events);
         ($available_events) ?
         responseData('events', $available_events, 200) :
         responseStatus('No event is found',404);
