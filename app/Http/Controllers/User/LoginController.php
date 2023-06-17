@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Auth\AuthInterface;
+use App\Models\Staff;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -42,5 +43,19 @@ class LoginController extends Controller
             return $this->auth->login($request,'salesperson');
         }
         responseStatus('This phone number is not exists',422);
+    }
+
+    public function getAuthLogin(Request $request)
+    {
+        $email = $request->email;
+        $staff = Staff::where('email',$email)->first();
+        if($staff){
+            $type_id = $staff->staff_type_id;
+            if($type_id ==  1){
+                return $this->auth->login($request,'admin');
+            }
+            return $this->auth->login($request,'receptionist');
+        }
+        responseStatus('This email is not exists',422);
     }
 }
