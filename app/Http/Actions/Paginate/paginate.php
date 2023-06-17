@@ -44,6 +44,7 @@ class paginate
     protected function getPaginatedData($paginated_data){
         $last_page= $paginated_data->lastPage();
         return [
+            'current_page'=> $paginated_data->currentPage(),
             'next_page_url' => $paginated_data->nextPageUrl(),
             'previous_page_url' => $paginated_data->previousPageUrl(),
             'first_page_url' => $paginated_data->url(1),

@@ -39,7 +39,7 @@ class SetTypeController extends BasicController
             $set_tables [] = $set_table;
         }
         $paginated_set_tables = (new paginate($set_tables,$request))->run();
-        responseData('set_tables',$paginated_set_tables,200);
+        responseData('data',$paginated_set_tables,200);
     }
 
     public function store(SetTypeStoreRequest $request){
