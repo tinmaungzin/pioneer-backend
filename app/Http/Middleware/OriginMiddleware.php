@@ -18,7 +18,7 @@ class OriginMiddleware
     {
         header('Access-Control-Allow-Origin:  *');
         // header('Access-Control-Allow-Origin:  http://localhost:3000');
-        header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Origin');
+        header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Authentication, Origin, X-Csrf-Token');
         header('Access-Control-Allow-Methods:  POST, PUT, DELETE');
         $response = $next($request);
         return $response;

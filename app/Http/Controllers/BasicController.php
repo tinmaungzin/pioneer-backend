@@ -19,7 +19,7 @@ class BasicController extends Controller
 
     public function indexDataByType($type = null, $var=null)
     {
-        $data = $this->model::where($var, $type)->orderBy('id', 'desc')->paginate(20)->withQueryString();
+        $data = $this->model::where($var, $type)->orderBy('id', 'desc')->paginate(10)->withQueryString();
         responseData('data',$data,200);
     }
 
