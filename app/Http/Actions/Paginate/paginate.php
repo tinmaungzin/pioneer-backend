@@ -26,7 +26,7 @@ class paginate
         $itemCollection = collect($array_data);
 
         // Define how many items we want to be visible in each page
-        $perPage = 10    ;
+        $perPage = 10   ;
 
         // Slice the collection to get the items to display in current page
         $currentPageItems = $itemCollection->slice(($currentPage * $perPage) - $perPage, $perPage)->values();
