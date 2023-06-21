@@ -7,19 +7,20 @@ use App\Http\Actions\Image\Image;
 class BasicController extends Controller
 {
     private $model;
+    private int $paginated_number = 10;
     public function __construct($model){
         $this->model = $model;
     }
 
     public function indexData($type = null){
-        if($type) $data = $this->model::where('type', $type)->orderBy('id', 'desc')->paginate(20)->withQueryString();
-        else $data = $this->model::orderBy('id', 'desc')->paginate(20)->withQueryString();
+        if($type) $data = $this->model::where('type', $type)->orderBy('id', 'desc')->paginate($this->paginated_number)->withQueryString();
+        else $data = $this->model::orderBy('id', 'desc')->paginate($this->paginated_number)->withQueryString();
         responseData('data',$data,200);
     }
 
     public function indexDataByType($type = null, $var=null)
     {
-        $data = $this->model::where($var, $type)->orderBy('id', 'desc')->paginate(20)->withQueryString();
+        $data = $this->model::where($var, $type)->orderBy('id', 'desc')->paginate($this->paginated_number)->withQueryString();
         responseData('data',$data,200);
     }
 
@@ -56,7 +57,7 @@ class BasicController extends Controller
 
     public function searchData($request){
         $query = $request->all()['query'];
-        $data = $this->model::where('name', 'LIKE', "%{$query}%")->paginate(20)->withQueryString();
+        $data = $this->model::where('name', 'LIKE', "%{$query}%")->paginate($this->paginated_number)->withQueryString();
         responseData('data',$data,200);
     }
 

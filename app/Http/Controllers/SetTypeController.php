@@ -20,7 +20,7 @@ class SetTypeController extends BasicController
 
     public function index(Request $request){
         $set_tables = [];
-        $set_types =  SetType::all();
+        $set_types =  SetType::orderBy('id', 'desc')->get();
         $group_set_types =  collect($set_types)->groupBy('type_id')->values();
         foreach ($group_set_types as $group_set_type){
             $set_table = new \stdClass();

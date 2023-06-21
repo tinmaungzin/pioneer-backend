@@ -45,16 +45,8 @@ class EventController extends BasicController
             $now = now()->format('Y-m-d h:i:s');
             $event_date = Carbon::parse($event->date)->addHours(4)->format('Y-m-d h:i:s') ;
             if($now < $event_date ){
-                foreach ($event->tables  as $table){
-                    $table->price =  SetType::where('set_id',$event->set_id)->where('type_id',$table->type_id)->pluck('price')->first();
-                    $table->event_table_id = $table->pivot->id;
-                    $table->booking_status = $table->pivot->booking_status;
-                    $table->allowed_people = Type::where('id',$table->type_id)->pluck('allowed_people')->first();
-                    $table->packages = Package::where('type_id',$table->type_id)->get();
-                    UnsetData($table,['pivot','created_at','updated_at']);
-                }
-                UnsetData($event,['set','created_at','updated_at']);
-                $available_events [] =$event;
+                $event = $this->getTableOfEvent($event);
+                $available_events [] = $event;
             }
 
         }
@@ -112,6 +104,25 @@ class EventController extends BasicController
 //            responseFalse("Invalid or incomplete input!");
 //        }
 
+    }
+
+    public function show(Event $event){
+        $event = $this->getTableOfEvent($event);
+        responseData('event',$event,200);
+    }
+
+    protected function getTableOfEvent($event)
+    {
+        foreach ($event->tables  as $table){
+            $table->price =  SetType::where('set_id',$event->set_id)->where('type_id',$table->type_id)->pluck('price')->first();
+            $table->event_table_id = $table->pivot->id;
+            $table->booking_status = $table->pivot->booking_status;
+            $table->allowed_people = Type::where('id',$table->type_id)->pluck('allowed_people')->first();
+            $table->packages = Package::where('type_id',$table->type_id)->get();
+            UnsetData($table,['pivot','created_at','updated_at']);
+            UnsetData($event,['set','created_at','updated_at']);
+        }
+        return $event;
     }
 
 

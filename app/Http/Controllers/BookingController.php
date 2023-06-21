@@ -12,9 +12,8 @@ use App\Models\Event;
 use App\Models\EventTable;
 use App\Models\SetType;
 use App\Models\Table;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+
 
 class BookingController extends BasicController
 {
@@ -46,17 +45,8 @@ class BookingController extends BasicController
         $table = Table::find($event_table->table_id);
         $price = SetType::where('set_id', $event->set_id)->where('type_id', $table->type_id)->pluck('price')->first();
         // parent::storeData($request);
-        if ($request->booking_status == "confirmed") {
-            $points = round($price / 1000);
-            if ($user && $user->user_type->id == 1) {
-                $user->point = $user->point + $points;
-                if ($booking->use_balance == 1) {
-                    if ($user->balance >= $price) $user->balance = $user->balance - $price;
-                    else responseFalse("Not enough balance!");
-                }
-                $user->save();
-            }
-        }
+        $this->addPoint($request, $price, $user, $booking);
+        responseTrue('successfully booked');
     }
 
     public function update(BookingUpdateRequest $request, Booking $booking)
@@ -76,17 +66,7 @@ class BookingController extends BasicController
                 $user->save();
             }
         }
-        if ($request->booking_status == "confirmed") {
-            $points = round($price / 1000);
-            if ($user && $user->user_type->id == 1) {
-                $user->point = $user->point + $points;
-                if ($booking->use_balance == 1) {
-                    if ($user->balance >= $price) $user->balance = $user->balance - $price;
-                    else responseFalse("Not enough balance!");
-                }
-                $user->save();
-            }
-        }
+
         event(new TableBookingEvent($request->event_table_id));
         responseTrue('successfully updated');
     }
@@ -114,11 +94,7 @@ class BookingController extends BasicController
         $user_id = request("user_id");
         if (request("type") == "all") $bookings = Booking::where("user_id", $user_id)->orderBy("created_at", "desc")->get();
         else $bookings = Booking::where("user_id", $user_id)->whereRelation('event_table', 'booking_status', '=', 'confirmed')->orderBy("created_at", "desc")->get();
-        $total = 0;
-        foreach ($bookings  as $booking) {
-            $booking->price = SetType::where('set_id', $booking->event_table->event->set_id)->where('type_id', $booking->event_table->table->type_id)->pluck('price')->first();
-            $total = $total + $booking->price;
-        }
+        $total = $this->getTotalPrice($bookings);
         ($bookings) ?
             responseArrayData(array("bookings" => $bookings, "total" => $total), 200) :
             responseStatus('No booking is found', 404);
@@ -127,13 +103,34 @@ class BookingController extends BasicController
     public function getBookingsForReport(Request $request, BookingFilters $filters)
     {
         $bookings = Booking::filter($filters)->whereRelation('event_table', 'booking_status', '=', 'confirmed')->orderBy("created_at", "desc")->get();
+        $total = $this->getTotalPrice($bookings);
+        ($bookings) ?
+            responseArrayData(array("bookings" => $bookings, "total" => $total), 200) :
+            responseStatus('No booking is found', 404);
+    }
+
+    protected function addPoint($request, $price, $user, $booking)
+    {
+        if ($request->booking_status == "confirmed") {
+            $points = round($price / 1000);
+            if ($user && $user->user_type->id == 1) {
+                $user->point = $user->point + $points;
+                if ($booking->use_balance == 1) {
+                    if ($user->balance >= $price) $user->balance = $user->balance - $price;
+                    else responseFalse("Not enough balance!");
+                }
+                $user->save();
+            }
+        }
+    }
+
+    protected function getTotalPrice($bookings)
+    {
         $total = 0;
         foreach ($bookings  as $booking) {
             $booking->price = SetType::where('set_id', $booking->event_table->event->set_id)->where('type_id', $booking->event_table->table->type_id)->pluck('price')->first();
             $total = $total + $booking->price;
         }
-        ($bookings) ?
-            responseArrayData(array("bookings" => $bookings, "total" => $total), 200) :
-            responseStatus('No booking is found', 404);
+        return $total;
     }
 }
