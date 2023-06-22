@@ -12,7 +12,6 @@ use App\Models\Type;
 use Illuminate\Http\Request;
 use App\Http\Actions\Image\Image;
 use Carbon\Carbon;
-use Exception;
 
 class EventController extends BasicController
 {
@@ -23,7 +22,7 @@ class EventController extends BasicController
 
     public function getAllTables()
     {
-        $tables = Table::all();
+        $tables = Table::orderBy("name")->get();
         ($tables) ?
         responseData('tables', $tables, 200) :
         responseStatus('No table is found',404);
