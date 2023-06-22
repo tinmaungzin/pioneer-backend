@@ -7,6 +7,7 @@ use App\Http\Repositories\Auth\AuthInterface;
 use App\Models\Staff;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -20,6 +21,7 @@ class LoginController extends Controller
     }
 
     public function getAdminLogin (Request $request){
+        Log::info('here');
         return $this->auth->login($request,'admin');
     }
 

@@ -8,6 +8,7 @@ use App\Models\Package;
 use App\Models\Set;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PackageController extends BasicController
 {
@@ -39,10 +40,12 @@ class PackageController extends BasicController
     }
 
     public function store(PackageStoreRequest $request){
+        Log::info($request);
         parent::storeData($request);
     }
 
     public function update(PackageUpdateRequest $request, Package $package){
+        Log::info($request);
          parent::updateData($request,$package);
     }
 
