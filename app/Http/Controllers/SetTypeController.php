@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Actions\Paginate\paginate;
 use App\Http\Requests\Admin\SetTypeStoreRequest;
 use App\Http\Requests\Admin\SetTypeUpdateRequest;
 use App\Models\SetType;
@@ -17,9 +18,9 @@ class SetTypeController extends BasicController
     }
 
 
-    public function index(){
+    public function index(Request $request){
         $set_tables = [];
-        $set_types =  SetType::all();
+        $set_types =  SetType::orderBy('id', 'desc')->get();
         $group_set_types =  collect($set_types)->groupBy('type_id')->values();
         foreach ($group_set_types as $group_set_type){
             $set_table = new \stdClass();
@@ -37,7 +38,8 @@ class SetTypeController extends BasicController
             $set_table->set_prices = $set_prices;
             $set_tables [] = $set_table;
         }
-        responseData('set_tables',$set_tables,200);
+        $paginated_set_tables = (new paginate($set_tables,$request))->run();
+        responseData('data',$paginated_set_tables,200);
     }
 
     public function store(SetTypeStoreRequest $request){

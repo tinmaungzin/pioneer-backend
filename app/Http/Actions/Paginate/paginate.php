@@ -26,7 +26,7 @@ class paginate
         $itemCollection = collect($array_data);
 
         // Define how many items we want to be visible in each page
-        $perPage = 20    ;
+        $perPage = 10   ;
 
         // Slice the collection to get the items to display in current page
         $currentPageItems = $itemCollection->slice(($currentPage * $perPage) - $perPage, $perPage)->values();
@@ -44,6 +44,7 @@ class paginate
     protected function getPaginatedData($paginated_data){
         $last_page= $paginated_data->lastPage();
         return [
+            'current_page'=> $paginated_data->currentPage(),
             'next_page_url' => $paginated_data->nextPageUrl(),
             'previous_page_url' => $paginated_data->previousPageUrl(),
             'first_page_url' => $paginated_data->url(1),
