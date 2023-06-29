@@ -17,7 +17,6 @@ class SetTypeController extends BasicController
         parent::__construct($set_type);
     }
 
-
     public function index(Request $request){
         $set_tables = [];
         $set_types =  SetType::orderBy('id', 'desc')->get();
@@ -66,7 +65,7 @@ class SetTypeController extends BasicController
         $request_type_id = $request->type_id;
         if($request_set_price && $request_table_count && $request_type_id ){
             $type = Type::find($request_type_id);
-            $set_prices = JsonDecode($request->set_price);
+            $set_prices = JsonDecode($request_set_price);
             foreach ($set_prices as $set_price){
                  SetType::firstOrCreate([
                     'set_id' => $set_price->set_id,
@@ -76,7 +75,7 @@ class SetTypeController extends BasicController
                 ]);
             }
             for($i = 1; $i <= $request_table_count ; $i++ ){
-                Table::create([
+                Table::firstOrCreate([
                     'name' => $type->name . $i,
                     'type_id' => $request_type_id
                 ]);
