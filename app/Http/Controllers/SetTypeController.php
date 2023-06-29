@@ -75,7 +75,7 @@ class SetTypeController extends BasicController
                 ]);
             }
             for($i = 1; $i <= $request_table_count ; $i++ ){
-                Table::create([
+                Table::firstOrCreate([
                     'name' => $type->name . $i,
                     'type_id' => $request_type_id
                 ]);
