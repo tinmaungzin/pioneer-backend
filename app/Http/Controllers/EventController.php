@@ -94,12 +94,13 @@ class EventController extends BasicController
         $data['date'] = Carbon::parse($data['date']);
 //        try
 //        {
-        if ($event) $event->update($data);
-        else $event = $this->event::create($data);
+        if ($event)
+            $event->update($data);
+        else
+            $event = $this->event::firstOrCreate($data);
         if ($request->tables && $event) {
             $tables = JsonDecode($request->tables);
-            $event->tables()->detach();
-            $event->tables()->attach($tables);
+            $event->tables()->sync($tables);
         }
 //        }catch(Exception $e){
 //            responseFalse("Invalid or incomplete input!");
