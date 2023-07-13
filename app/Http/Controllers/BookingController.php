@@ -25,7 +25,8 @@ class BookingController extends BasicController
 
     public function index()
     {
-        parent::indexData();
+       $bookings = Booking::orderBy('created_at', 'desc')->paginate(20)->withQueryString();
+       return $bookings;
     }
 
     public function store(BookingStoreRequest $request)

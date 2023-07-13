@@ -31,7 +31,7 @@ class EventController extends BasicController
 
     public function getAllEvents()
     {
-        $events = Event::all();
+        $events = Event::orderBy('date', 'asc')->get();
         ($events) ?
             responseData('events', $events, 200) :
             responseStatus('No events is found', 404);
@@ -39,11 +39,11 @@ class EventController extends BasicController
 
     public function availableEvents()
     {
-        $events = Event::with('set')->where('is_available', 1)->get();
+        $events = Event::with('set')->where('is_available', 1)->orderBy('date')->get();
         $available_events = [];
         foreach ($events as $event) {
             $now = now()->format('Y-m-d h:i:s');
-            $event_date = Carbon::parse($event->date)->addHours(4)->format('Y-m-d h:i:s');
+            $event_date = Carbon::parse($event->date)->addHours(28)->format('Y-m-d h:i:s');
             if ($now < $event_date) {
                 $event = $this->getTableOfEvent($event);
                 $available_events [] = $event;
@@ -71,7 +71,8 @@ class EventController extends BasicController
 
     public function index()
     {
-        parent::indexData();
+        $events = Event::orderBy('date', 'asc')->get();
+        responseData('data',$events,200);
     }
 
     public function store(EventStoreRequest $request)
@@ -82,7 +83,7 @@ class EventController extends BasicController
 
     public function saveData($request, $event = null)
     {
-        $data = $request->all();
+        $data = $request->except('tables');
         if ($request->has('photo')) {
             $path = (new Image())->upload($request->photo);
             $data['photo'] = $path;
