@@ -26,7 +26,7 @@ class BookingController extends BasicController
     public function index()
     {
        $bookings = Booking::orderBy('created_at', 'desc')->paginate(20)->withQueryString();
-       return $bookings;
+       responseData('data',$bookings,200);
     }
 
     public function store(BookingStoreRequest $request)
@@ -42,11 +42,7 @@ class BookingController extends BasicController
         }
         $booking = Booking::create($data);
         $user = $booking->user;
-        $event = Event::find($event_table->event_id);
-        $table = Table::find($event_table->table_id);
-        $price = SetType::where('set_id', $event->set_id)->where('type_id', $table->type_id)->pluck('price')->first();
-        // parent::storeData($request);
-        $this->addPoint($request, $price, $user, $booking);
+        $this->addPoint($request, $event_table->price, $user, $booking);
         responseTrue('successfully booked');
     }
 
