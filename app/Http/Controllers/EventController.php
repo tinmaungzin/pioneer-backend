@@ -71,7 +71,7 @@ class EventController extends BasicController
 
     public function index()
     {
-        $events = Event::orderBy('date', 'asc')->get();
+        $events = Event::orderBy('date', 'asc')->paginate(10);
         responseData('data',$events,200);
     }
 
