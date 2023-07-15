@@ -16,12 +16,7 @@ class TypesSeeder extends Seeder
     public function run()
     {
         Type::create([
-            'name'=>'VIP',
-            'allowed_people' => 5,
-            'is_available' => 1
-        ]);
-        Type::create([
-            'name'=>'LVIP',
+            'name'=>'VVIP',
             'allowed_people' => 5,
             'is_available' => 1
         ]);
@@ -31,7 +26,17 @@ class TypesSeeder extends Seeder
             'is_available' => 1
         ]);
         Type::create([
-            'name'=>'WWIP',
+            'name'=>'LVIP',
+            'allowed_people' => 5,
+            'is_available' => 1
+        ]);
+        Type::create([
+            'name'=>'VIP',
+            'allowed_people' => 5,
+            'is_available' => 1
+        ]);
+        Type::create([
+            'name'=>'GA',
             'allowed_people' => 5,
             'is_available' => 1
         ]);
