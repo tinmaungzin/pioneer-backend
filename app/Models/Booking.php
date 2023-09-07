@@ -11,7 +11,7 @@ class Booking extends Model
 {
     use Filterable;
     use HasFactory;
-    protected $fillable=['name', 'phone_number', 'user_id', 'event_table_id', 'photo','use_balance', 'note'];
+    protected $fillable=['name', 'phone_number', 'user_id', 'event_table_id', 'photo','use_balance', 'note','admin_note'];
     protected $with = ['user', 'event_table'];
 
     protected $casts = [

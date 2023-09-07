@@ -22,6 +22,7 @@ return new class extends Migration
             $table->char('photo', 100)->nullable();
             $table->boolean('use_balance')->default(0);
             $table->string('note')->nullable();
+            $table->string('admin_note')->nullable();
             $table->timestamps();
         });
     }
