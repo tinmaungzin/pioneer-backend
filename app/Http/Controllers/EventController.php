@@ -57,15 +57,20 @@ class EventController extends BasicController
 
     protected function getTableOfEvent($event)
     {
-        foreach ($event->tables as $table) {
+        $event_tables = $event->tables->toArray();
+        usort($event_tables, function ($a, $b) {
+            return strnatcmp($a['name'], $b['name']);
+        });
+
+        foreach ($event_tables as $event_table) {
+            $table = (object) $event_table;
             $table->price = SetType::where('set_id', $event->set_id)->where('type_id', $table->type_id)->pluck('price')->first();
-            $table->event_table_id = $table->pivot->id;
-            $table->booking_status = $table->pivot->booking_status;
+            $table->event_table_id = $table->pivot['id'];
+            $table->booking_status = $table->pivot['booking_status'];
             $table->allowed_people = Type::where('id', $table->type_id)->pluck('allowed_people')->first();
             $table->packages = Package::where('type_id', $table->type_id)->get();
-            UnsetData($table, ['pivot', 'created_at', 'updated_at']);
-            UnsetData($event, ['set', 'created_at', 'updated_at']);
         }
+        $event->tables = $event_tables;
         return $event;
     }
 
