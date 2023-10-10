@@ -34,7 +34,7 @@ class BookingController extends BasicController
         $event_table = EventTable::find($request->event_table_id);
         $event_table->booking_status = $request->booking_status;
         $event_table->save();
-        // event(new TableBookingEvent($request->event_table_id));
+         event(new TableBookingEvent($request->event_table_id));
         $data = $request->all();
         if($request->has('photo')){
             $path = (new Image())->upload($request->photo);
@@ -48,7 +48,6 @@ class BookingController extends BasicController
 
     public function update(BookingUpdateRequest $request, Booking $booking)
     {
-
 
         $event_table = EventTable::find($request->event_table_id);
         $event_table->booking_status = $request->booking_status;
@@ -64,6 +63,11 @@ class BookingController extends BasicController
                 if ($booking->use_balance == 1) $user->balance = $user->balance + $price;
                 $user->save();
             }
+        }
+        if($request->admin_note != null){
+            Booking::update([
+                'admin_note'=>$request->admin_note
+            ]);
         }
 
         event(new TableBookingEvent($request->event_table_id));
