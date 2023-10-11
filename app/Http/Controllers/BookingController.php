@@ -48,7 +48,6 @@ class BookingController extends BasicController
 
     public function update(BookingUpdateRequest $request, Booking $booking)
     {
-
         $event_table = EventTable::find($request->event_table_id);
         $event_table->booking_status = $request->booking_status;
         $event_table->save();
@@ -65,7 +64,7 @@ class BookingController extends BasicController
             }
         }
         if($request->admin_note != null){
-            Booking::update([
+            $booking->update([
                 'admin_note'=>$request->admin_note
             ]);
         }

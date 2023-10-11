@@ -57,7 +57,8 @@ class EventController extends BasicController
 
     protected function getTableOfEvent($event)
     {
-        foreach ($event->tables as $table) {
+        $event_tables = $event->tables;
+        foreach ($event_tables as $table) {
             $table->price = SetType::where('set_id', $event->set_id)->where('type_id', $table->type_id)->pluck('price')->first();
             $table->event_table_id = $table->pivot->id;
             $table->booking_status = $table->pivot->booking_status;
@@ -66,7 +67,14 @@ class EventController extends BasicController
             UnsetData($table, ['pivot', 'created_at', 'updated_at']);
             UnsetData($event, ['set', 'created_at', 'updated_at']);
         }
+        $event_array = $event_tables->toArray();
+        usort($event_array, function ($a, $b) {
+            return strnatcmp($a['name'], $b['name']);
+        });
+        $event_collection = collect($event_array);
+        $event->tables = $event_collection;
         return $event;
+
 //        $event_tables = $event->tables->toArray();
 //        usort($event_tables, function ($a, $b) {
 //            return strnatcmp($a['name'], $b['name']);
@@ -87,7 +95,7 @@ class EventController extends BasicController
     public function index()
     {
         $events = Event::orderBy("created_at", "desc")->paginate(10);
-        responseData('data',$events,200);
+        responseData('data', $events, 200);
     }
 
     public function store(EventStoreRequest $request)
