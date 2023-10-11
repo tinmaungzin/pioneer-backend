@@ -23,9 +23,13 @@ class EventController extends BasicController
 
     public function getAllTables()
     {
-        $tables = Table::orderBy("name")->get();
-        ($tables) ?
-            responseData('tables', $tables, 200) :
+        $tables = Table::all()->toArray();
+        usort($tables, function ($a, $b) {
+            return strnatcmp($a['name'], $b['name']);
+        });
+        $event_collection = collect($tables);
+        ($event_collection) ?
+            responseData('tables', $event_collection, 200) :
             responseStatus('No table is found', 404);
     }
 
